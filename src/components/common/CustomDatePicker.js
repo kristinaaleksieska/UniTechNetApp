@@ -22,7 +22,6 @@ function DatePickers(props) {
       id="date"
       label="Birthday"
       type="date"
-      defaultValue={props.defaultDate}
       value={props.defaultDate}
       className={classes.textField}
       InputLabelProps={{

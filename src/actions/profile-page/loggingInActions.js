@@ -17,7 +17,7 @@ export const setInitialUserInfos = uid => {
           database.ref('users/' + uid).set({
             name: '',
             surname: '',
-            birthday: '',
+            birthday: '1990-01-01',
             gender: ''
           });
         }

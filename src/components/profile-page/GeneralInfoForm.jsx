@@ -5,6 +5,8 @@ import { compose } from 'redux';
 import { firebaseConnect } from 'react-redux-firebase';
 import CustomDatePicker from '../common/CustomDatePicker';
 
+import { firebase } from '../../firebase/firebase';
+
 export class GeneralInfoForm extends React.Component {
   state = {
     id: '',
@@ -15,15 +17,19 @@ export class GeneralInfoForm extends React.Component {
   };
 
   componentWillReceiveProps(nextProps) {
-    const { generalInfo } = nextProps;
+    const { users } = nextProps;
 
-    if (generalInfo) {
-      this.setState({
-        ...generalInfo
-      });
-      if (generalInfo.birthday) {
-        let birthday = moment(generalInfo.birthday);
-        this.setState({ birthday });
+    if (users) {
+      const user = users[firebase.auth().currentUser.uid];
+
+      if (user) {
+        this.setState({ ...user });
+
+        if (user.birthday) {
+          this.setState({
+            birthday: moment(user.birthday),
+          });
+        }
       }
     }
   }
@@ -72,6 +78,7 @@ export class GeneralInfoForm extends React.Component {
   };
 
   render() {
+    console.log(this.props.users);
     return (
       <div>
         <form onSubmit={this.onSubmit}>
