@@ -28,7 +28,6 @@ const CourseList = ({ courses }) => {
 };
 
 const mapStateToProps = state => ({
-  generalInfo: state.generalInfo,
   courses: state.firebase.data.courses
 });
 

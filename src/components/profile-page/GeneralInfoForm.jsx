@@ -27,7 +27,7 @@ export class GeneralInfoForm extends React.Component {
 
         if (user.birthday) {
           this.setState({
-            birthday: moment(user.birthday),
+            birthday: moment(user.birthday)
           });
         }
       }
@@ -112,7 +112,6 @@ export class GeneralInfoForm extends React.Component {
 }
 
 const mapStateToProps = state => ({
-  generalInfo: state.generalInfo,
   users: state.firebase.data.users,
   courses: state.firebase.data.courses
 });

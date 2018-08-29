@@ -1,7 +1,23 @@
 import { push } from 'connected-react-router';
-import { firebase } from '../../firebase/firebase';
+import database, { firebase } from '../../firebase/firebase';
 
-import { setInitialUserInfos } from '../profile-page/loggingInActions';
+const setInitialUserInfos = uid => dispatch => {
+  return database
+    .ref('users')
+    .once('value')
+    .then(snapshot => {
+      var hasChildWithUid = snapshot.hasChild(uid);
+
+      if (!hasChildWithUid) {
+        database.ref('users/' + uid).set({
+          name: '',
+          surname: '',
+          birthday: '1990-01-01',
+          gender: ''
+        });
+      }
+    });
+};
 
 export const loginWithEmailAndPassword = (email, password) => dispatch =>
   firebase
@@ -9,5 +25,7 @@ export const loginWithEmailAndPassword = (email, password) => dispatch =>
     .signInWithEmailAndPassword(email, password)
     .then(() => {
       const uid = firebase.auth().currentUser.uid;
-      dispatch(setInitialUserInfos(uid)).then(() => dispatch(push('/profilepage')));
+      dispatch(setInitialUserInfos(uid)).then(() =>
+        dispatch(push('/profilepage'))
+      );
     });
