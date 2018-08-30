@@ -9,8 +9,7 @@ export const getFirebaseAuthDetails = state => getFirebaseState(state).auth;
 export const isFirebaseUserLoggedIn = state =>
   !getFirebaseAuthDetails(state).isEmpty;
 
-export const userLoggedIn = state =>
-  getFirebaseState(state).auth.uid;
+export const userLoggedIn = state => getFirebaseState(state).auth.uid;
 
 export const getCurrentUserDetails = state => {
   const currentUserUid = userLoggedIn(state);

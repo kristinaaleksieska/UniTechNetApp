@@ -13,7 +13,12 @@ const setInitialUserInfos = uid => dispatch => {
           name: '',
           surname: '',
           birthday: '1990-01-01',
-          gender: ''
+          gender: '',
+          title: '',
+          id: uid,
+          profilePictureUrl: '',
+          username: '',
+          phoneNumber: ''
         });
       }
     });
