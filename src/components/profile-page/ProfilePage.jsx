@@ -1,29 +1,52 @@
 import React from "react";
+import { compose } from 'redux';
+import styled from 'styled-components';
+import { firebaseConnect, isEmpty } from 'react-redux-firebase';
 import { connect } from "react-redux";
 import { startUpdateGeneralInfo } from "../../actions/profile-page/generalInfoActions";
 import GeneralInfoForm from "./GeneralInfoForm";
 
+import UserInfo from './components/user-info/UserInfo';
+
+// Selectors
+import { getCurrentUserDetails } from '../../selectors/firebaseSelectors';
+
 class ProfilePage extends React.Component {
-  constructor(props) {
-    super(props);
-  }
   onSubmit = updatedGeneralInfo => {
     this.props.startUpdateGeneralInfo(updatedGeneralInfo);
   };
   render() {
+    const fakeUser = {
+      name: 'Andrej',
+      surname: 'Naumovski',
+      title: 'React Guru',
+      phoneNumber: '+389 75 405 699',
+      email: 'andrejnaumovski@outlook.com',
+      id: 'testid12312',
+    }
     return (
       <div>
-        <GeneralInfoForm onSubmit={this.onSubmit} />
+        <UserInfo user={this.props.currentUser} />
       </div>
     );
   }
 }
 
+const mapStateToProps = state => {
+  console.log(state);
+  return ({
+    currentUser: getCurrentUserDetails(state),
+  })
+};
+
 const mapDispatchToProps = dispatch => ({
   startUpdateGeneralInfo: updatedGeneralInfo =>
     dispatch(startUpdateGeneralInfo(updatedGeneralInfo))
 });
-export default connect(
-  null,
-  mapDispatchToProps
-)(ProfilePage);
+
+const composer = compose(
+  firebaseConnect(['users']),
+  connect(mapStateToProps, mapDispatchToProps)
+);
+
+export default composer(ProfilePage);
