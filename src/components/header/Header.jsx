@@ -27,16 +27,22 @@ const Header = ({ title, onMenuButtonClick }) => {
   return (
     <AppBar position="static">
       <Toolbar>
-        <IconButton onClick={onMenuButtonClick(true)} aria-label="MenuDrawer" color="secondary">
+        <IconButton
+          onClick={onMenuButtonClick(true)}
+          aria-label="MenuDrawer"
+          color="secondary"
+        >
           <MenuIcon />
         </IconButton>
         <StyledTypography variant="title" color="secondary">
           {title}
         </StyledTypography>
-        <Button variant="flat" color="secondary">LOGOUT</Button>
+        <Button variant="flat" color="secondary" onClick={logOut}>
+          LOGOUT
+        </Button>
       </Toolbar>
     </AppBar>
   );
-}
+};
 
 export default Header;

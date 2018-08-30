@@ -22,3 +22,8 @@ export const getCurrentUserDetails = state => {
 
   return users[currentUserUid];
 };
+
+export const getAllCourses = state => getFirebaseData(state).courses;
+
+export const getCoursesCurrentUserIsSubscribedTo = state =>
+  getCurrentUserDetails(state).courses;
