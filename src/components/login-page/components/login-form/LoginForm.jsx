@@ -12,23 +12,26 @@ import { loginWithEmailAndPassword } from '../../../../actions/login/loginAction
 class LoginForm extends React.Component {
   state = {
     username: '',
-    password: '',
+    password: ''
   };
 
   onInputChange = e => {
-    this.setState({
-      [e.target.id]: e.target.value,
-    }, () => console.log(this.state));
-  }
+    this.setState(
+      {
+        [e.target.id]: e.target.value
+      },
+      () => console.log(this.state)
+    );
+  };
 
   onButtonClick = () => {
     const { username, password } = this.state;
     this.props.loginWithEmailAndPassword(username, password);
-  }
+  };
 
   render() {
     const { username, password } = this.state;
-    
+
     return (
       <Card>
         <CardContent>
@@ -50,15 +53,20 @@ class LoginForm extends React.Component {
           />
         </CardContent>
         <CardActions>
-          <Button onClick={this.onButtonClick} color="primary" variant="flat">Log in</Button>
+          <Button onClick={this.onButtonClick} color="primary" variant="flat">
+            Log in
+          </Button>
         </CardActions>
       </Card>
     );
-  };
+  }
 }
 
 const mapDispatchToProps = {
-  loginWithEmailAndPassword,
+  loginWithEmailAndPassword
 };
 
-export default connect(null, mapDispatchToProps)(LoginForm);
+export default connect(
+  null,
+  mapDispatchToProps
+)(LoginForm);

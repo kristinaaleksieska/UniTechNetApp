@@ -2,6 +2,8 @@ import React from 'react';
 import styled from 'styled-components';
 import firebase from 'firebase';
 import 'firebase/auth';
+import { logout } from '../../actions/logout/logoutActions';
+import { connect } from 'react-redux';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import IconButton from '@material-ui/core/IconButton';
@@ -14,14 +16,10 @@ const StyledTypography = styled(Typography)`
   flex-grow: 1;
 `;
 
-const Header = ({ title, onMenuButtonClick }) => {
+const Header = ({ title, onMenuButtonClick, logout }) => {
   const logOut = e => {
     e.preventDefault();
-    firebase
-      .auth()
-      .signOut()
-      .then(() => console.log('Signed out'))
-      .catch(err => console.log(err));
+    logout();
   };
 
   return (
@@ -45,4 +43,11 @@ const Header = ({ title, onMenuButtonClick }) => {
   );
 };
 
-export default Header;
+const mapDispatchToProps = {
+  logout
+};
+
+export default connect(
+  null,
+  mapDispatchToProps
+)(Header);
