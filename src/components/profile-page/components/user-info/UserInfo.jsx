@@ -3,14 +3,14 @@ import { firebase } from '../../../../firebase/firebase';
 import 'firebase/auth';
 import { connect } from 'react-redux';
 import { startUpdateGeneralInfo } from '../../../../actions/profile-page/generalInfoActions';
+import EditableUserDetails from './EditableUserDetails';
+import UserDetails from './UserDetails';
 import styled from 'styled-components';
-import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import AccountCircle from '@material-ui/icons/AccountCircle';
 import EditIcon from '@material-ui/icons/Edit';
 import DefaultProfilePicture from '../../../../assets/images/default-profile.jpg';
-import Input from '@material-ui/core/Input';
 
 const BackgroundContainer = styled.div`
   background-color: #fff;
@@ -30,7 +30,7 @@ const ProfilePicture = styled.img`
   width: 20%;
 `;
 
-const UserDetails = styled.div`
+const UserDetailsContainer = styled.div`
   text-align: center;
 `;
 
@@ -72,13 +72,23 @@ class UserInfo extends React.Component {
     return newState;
   }
 
-  onInputChange = e => {
+  onValueChange = e => {
     this.setState({
       user: {
         ...this.state.user,
         [e.target.id]: e.target.value
       }
     });
+  };
+
+  onBirthdayChange = event => {
+    const birthday = event.target.value;
+    this.setState(() => ({
+      user: {
+        ...this.state.user,
+        birthday
+      }
+    }));
   };
 
   editDetails = () => {
@@ -95,16 +105,19 @@ class UserInfo extends React.Component {
       gender,
       title,
       username,
-      phoneNumber
+      phoneNumber,
+      birthday
     } = this.state.user;
+
     this.props.startUpdateGeneralInfo({
-      id,
+      id: firebase.auth().currentUser.uid,
       name,
       surname,
       gender,
       title,
       username,
-      phoneNumber
+      phoneNumber,
+      birthday
     });
     this.setState({
       editable: false
@@ -151,70 +164,16 @@ class UserInfo extends React.Component {
       <BackgroundContainer>
         <ContentContainer>
           <ProfilePicture src={DefaultProfilePicture} />
-          <UserDetails>
+          <UserDetailsContainer>
             {editable ? (
-              <div>
-                <Input
-                  value={userFromState.name}
-                  id="name"
-                  onChange={this.onInputChange}
-                  autoFocus
-                  fullWidth
-                  placeholder="Name"
-                />
-                <Input
-                  value={userFromState.surname}
-                  id="surname"
-                  onChange={this.onInputChange}
-                  autoFocus
-                  fullWidth
-                  placeholder="Surname"
-                />
-                <Input
-                  value={userFromState.gender}
-                  id="gender"
-                  onChange={this.onInputChange}
-                  autoFocus
-                  fullWidth
-                  placeholder="Gender"
-                />
-                <Input
-                  value={userFromState.title}
-                  id="title"
-                  onChange={this.onInputChange}
-                  autoFocus
-                  fullWidth
-                  placeholder="Title"
-                />
-                <Input
-                  value={userFromState.username}
-                  id="username"
-                  onChange={this.onInputChange}
-                  autoFocus
-                  fullWidth
-                  placeholder="Username"
-                />{' '}
-                <Input
-                  value={userFromState.phoneNumber}
-                  id="phoneNumber"
-                  onChange={this.onInputChange}
-                  autoFocus
-                  fullWidth
-                  placeholder="Phone Number"
-                />
-              </div>
+              <EditableUserDetails
+                onValueChange={this.onValueChange}
+                user={userFromState}
+              />
             ) : (
-              <div>
-                <Typography variant="headline">
-                  {`${user.name} ${user.surname}`}
-                </Typography>
-                <Typography variant="subheading">{user.title}</Typography>
-                <Typography variant="caption">
-                  {user.phoneNumber} | {user.email}
-                </Typography>
-              </div>
+              <UserDetails user={userFromState} />
             )}
-          </UserDetails>
+          </UserDetailsContainer>
           <Actions>{this.generateActionButton()}</Actions>
         </ContentContainer>
       </BackgroundContainer>
