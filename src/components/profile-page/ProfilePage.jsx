@@ -6,6 +6,7 @@ import { startUpdateGeneralInfo } from '../../actions/profile-page/generalInfoAc
 
 import UserInfo from './components/user-info/UserInfo';
 import UserCourses from './components/user-courses/UserCourses';
+import UserExperiences from './components/user-experiences/ListUserExperiences';
 // Selectors
 import { getCurrentUserDetails } from '../../selectors/firebaseSelectors';
 
@@ -19,6 +20,7 @@ class ProfilePage extends React.Component {
       <div>
         <UserInfo user={this.props.currentUser} />
         <UserCourses user={this.props.currentUser} />
+        <UserExperiences user={this.props.currentUser} />
       </div>
     );
   }
