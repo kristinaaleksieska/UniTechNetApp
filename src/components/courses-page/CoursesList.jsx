@@ -1,20 +1,15 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import CourseListItem from './CourseListItem';
 import { compose } from 'redux';
 import { firebaseConnect } from 'react-redux-firebase';
+import CourseListItem from './CourseListItem';
+import Loading from '../common/CustomDatePicker';
 import { getAllCourses } from '../../selectors/firebaseSelectors';
-
-const mapFirebaseCoursesToArray = firebaseCourses =>
-  Object.keys(firebaseCourses).map(courseId => ({
-    id: courseId,
-    name: firebaseCourses[courseId].name,
-    description: firebaseCourses[courseId].description
-  }));
+import { mapFirebaseCoursesToArray } from '../../mappings-from-firebase/MappingsFromFirebase';
 
 const CourseList = ({ courses }) => {
   if (!courses) {
-    return null;
+    return <Loading />;
   }
 
   const courseArray = mapFirebaseCoursesToArray(courses);

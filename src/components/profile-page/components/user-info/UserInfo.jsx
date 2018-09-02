@@ -5,9 +5,9 @@ import { connect } from 'react-redux';
 import { startUpdateGeneralInfo } from '../../../../actions/profile-page/generalInfoActions';
 import EditableUserDetails from './EditableUserDetails';
 import UserDetails from './UserDetails';
+import Loading from '../../../common/Loading';
 import styled from 'styled-components';
 import Button from '@material-ui/core/Button';
-import CircularProgress from '@material-ui/core/CircularProgress';
 import AccountCircle from '@material-ui/icons/AccountCircle';
 import EditIcon from '@material-ui/icons/Edit';
 import DefaultProfilePicture from '../../../../assets/images/default-profile.jpg';
@@ -37,16 +37,6 @@ const UserDetailsContainer = styled.div`
 const Actions = styled.div`
   margin-top: 10px;
   text-align: center;
-`;
-
-const ProgressContainer = styled.div`
-  background-color: rgba(0, 0, 0, 0.3);
-  width: 100%;
-  height: 900px;
-  z-index: 999999;
-  display: flex;
-  align-items: center;
-  justify-content: center;
 `;
 
 class UserInfo extends React.Component {
@@ -153,11 +143,7 @@ class UserInfo extends React.Component {
     const { editable, user: userFromState } = this.state;
     // FIXME: Temporary fix, make progress dialog bigger and global
     if (!user) {
-      return (
-        <ProgressContainer>
-          <CircularProgress color="primary" size={200} />
-        </ProgressContainer>
-      );
+      return <Loading />;
     }
 
     return (

@@ -13,7 +13,6 @@ export const userLoggedIn = state => getFirebaseState(state).auth.uid;
 
 export const getCurrentUserDetails = state => {
   const currentUserUid = userLoggedIn(state);
-
   const users = getUsers(state);
 
   if (!users) {

@@ -1,11 +1,11 @@
 import React from 'react';
 import { compose } from 'redux';
-import styled from 'styled-components';
 import { firebaseConnect } from 'react-redux-firebase';
 import { connect } from 'react-redux';
 import { startUpdateGeneralInfo } from '../../actions/profile-page/generalInfoActions';
 
 import UserInfo from './components/user-info/UserInfo';
+import UserCourses from './components/user-courses/UserCourses';
 // Selectors
 import { getCurrentUserDetails } from '../../selectors/firebaseSelectors';
 
@@ -18,6 +18,7 @@ class ProfilePage extends React.Component {
     return (
       <div>
         <UserInfo user={this.props.currentUser} />
+        <UserCourses user={this.props.currentUser} />
       </div>
     );
   }
