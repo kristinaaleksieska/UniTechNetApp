@@ -1,6 +1,5 @@
 import React from 'react';
 import styled from 'styled-components';
-import firebase from 'firebase';
 import 'firebase/auth';
 import { logout } from '../../actions/logout/logoutActions';
 import { connect } from 'react-redux';
@@ -17,11 +16,6 @@ const StyledTypography = styled(Typography)`
 `;
 
 const Header = ({ title, onMenuButtonClick, logout }) => {
-  const logOut = e => {
-    e.preventDefault();
-    logout();
-  };
-
   return (
     <AppBar position="static">
       <Toolbar>
@@ -35,7 +29,7 @@ const Header = ({ title, onMenuButtonClick, logout }) => {
         <StyledTypography variant="title" color="secondary">
           {title}
         </StyledTypography>
-        <Button variant="flat" color="secondary" onClick={logOut}>
+        <Button variant="flat" color="secondary" onClick={logout}>
           LOGOUT
         </Button>
       </Toolbar>

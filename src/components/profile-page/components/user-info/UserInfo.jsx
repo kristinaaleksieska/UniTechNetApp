@@ -1,13 +1,16 @@
 import React from 'react';
+import { firebase } from '../../../../firebase/firebase';
+import 'firebase/auth';
+import { connect } from 'react-redux';
+import { startUpdateGeneralInfo } from '../../../../actions/profile-page/generalInfoActions';
 import styled from 'styled-components';
 import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import AccountCircle from '@material-ui/icons/AccountCircle';
 import EditIcon from '@material-ui/icons/Edit';
-import { firebase } from '../../../../firebase/firebase';
-import 'firebase/auth';
 import DefaultProfilePicture from '../../../../assets/images/default-profile.jpg';
+import Input from '@material-ui/core/Input';
 
 const BackgroundContainer = styled.div`
   background-color: #fff;
@@ -44,39 +47,85 @@ const ProgressContainer = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
-`
+`;
 
 class UserInfo extends React.Component {
   state = {
     editable: false,
     isCurrentUser: false,
+    user: {}
   };
 
   static getDerivedStateFromProps(nextProps, prevState) {
     if (!nextProps.user) {
       return prevState;
     }
-    return {
+    let newState = {
       ...prevState,
-      isCurrentUser: firebase.auth().currentUser.uid === nextProps.user.id,
+      isCurrentUser: firebase.auth().currentUser.uid === nextProps.user.id
     };
+
+    if (Object.keys(newState.user).length === 0) {
+      newState = { ...newState, user: nextProps.user };
+    }
+
+    return newState;
   }
+
+  onInputChange = e => {
+    this.setState({
+      user: {
+        ...this.state.user,
+        [e.target.id]: e.target.value
+      }
+    });
+  };
 
   editDetails = () => {
     this.setState({
-      editable: true,
+      editable: true
     });
-  }
+  };
 
-  addConnection = () => {
+  updateDetails = () => {
+    const {
+      id,
+      name,
+      surname,
+      gender,
+      title,
+      username,
+      phoneNumber
+    } = this.state.user;
+    this.props.startUpdateGeneralInfo({
+      id,
+      name,
+      surname,
+      gender,
+      title,
+      username,
+      phoneNumber
+    });
+    this.setState({
+      editable: false
+    });
+  };
 
-  }
+  addConnection = () => {};
 
   generateActionButton = () => {
-    const { isCurrentUser } = this.state;
+    const { isCurrentUser, editable } = this.state;
     const buttonIcon = isCurrentUser ? <EditIcon /> : <AccountCircle />;
-    const buttonText = isCurrentUser ? 'EDIT DETAILS' : 'ADD CONNECTION';
-    const buttonAction = isCurrentUser ? this.editDetails : this.addConnection;
+    const buttonText = isCurrentUser
+      ? editable
+        ? 'UPDATE'
+        : 'EDIT DETAILS'
+      : 'ADD CONNECTION';
+    const buttonAction = isCurrentUser
+      ? editable
+        ? this.updateDetails
+        : this.editDetails
+      : this.addConnection;
 
     return (
       <Button onClick={buttonAction} variant="raised" color="primary">
@@ -84,11 +133,11 @@ class UserInfo extends React.Component {
         {buttonText}
       </Button>
     );
-  }
+  };
 
   render() {
     const { user } = this.props;
-
+    const { editable, user: userFromState } = this.state;
     // FIXME: Temporary fix, make progress dialog bigger and global
     if (!user) {
       return (
@@ -103,23 +152,82 @@ class UserInfo extends React.Component {
         <ContentContainer>
           <ProfilePicture src={DefaultProfilePicture} />
           <UserDetails>
-            <Typography variant="headline">
-              {`${user.name} ${user.surname}`}
-            </Typography>
-            <Typography variant="subheading">
-              {user.title}
-            </Typography>
-            <Typography variant="caption">
-              {user.phoneNumber} | {user.email}
-            </Typography>
+            {editable ? (
+              <div>
+                <Input
+                  value={userFromState.name}
+                  id="name"
+                  onChange={this.onInputChange}
+                  autoFocus
+                  fullWidth
+                  placeholder="Name"
+                />
+                <Input
+                  value={userFromState.surname}
+                  id="surname"
+                  onChange={this.onInputChange}
+                  autoFocus
+                  fullWidth
+                  placeholder="Surname"
+                />
+                <Input
+                  value={userFromState.gender}
+                  id="gender"
+                  onChange={this.onInputChange}
+                  autoFocus
+                  fullWidth
+                  placeholder="Gender"
+                />
+                <Input
+                  value={userFromState.title}
+                  id="title"
+                  onChange={this.onInputChange}
+                  autoFocus
+                  fullWidth
+                  placeholder="Title"
+                />
+                <Input
+                  value={userFromState.username}
+                  id="username"
+                  onChange={this.onInputChange}
+                  autoFocus
+                  fullWidth
+                  placeholder="Username"
+                />{' '}
+                <Input
+                  value={userFromState.phoneNumber}
+                  id="phoneNumber"
+                  onChange={this.onInputChange}
+                  autoFocus
+                  fullWidth
+                  placeholder="Phone Number"
+                />
+              </div>
+            ) : (
+              <div>
+                <Typography variant="headline">
+                  {`${user.name} ${user.surname}`}
+                </Typography>
+                <Typography variant="subheading">{user.title}</Typography>
+                <Typography variant="caption">
+                  {user.phoneNumber} | {user.email}
+                </Typography>
+              </div>
+            )}
           </UserDetails>
-          <Actions>
-            {this.generateActionButton()}
-          </Actions>
+          <Actions>{this.generateActionButton()}</Actions>
         </ContentContainer>
       </BackgroundContainer>
     );
   }
 }
 
-export default UserInfo;
+const mapDispatchToProps = dispatch => ({
+  startUpdateGeneralInfo: updatedGeneralInfo =>
+    dispatch(startUpdateGeneralInfo(updatedGeneralInfo))
+});
+
+export default connect(
+  null,
+  mapDispatchToProps
+)(UserInfo);

@@ -18,7 +18,8 @@ const setInitialUserInfos = uid => dispatch => {
           id: uid,
           profilePictureUrl: '',
           username: '',
-          phoneNumber: ''
+          phoneNumber: '',
+          email: firebase.auth().currentUser.email
         });
       }
     });

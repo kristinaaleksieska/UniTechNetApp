@@ -16,12 +16,9 @@ class LoginForm extends React.Component {
   };
 
   onInputChange = e => {
-    this.setState(
-      {
-        [e.target.id]: e.target.value
-      },
-      () => console.log(this.state)
-    );
+    this.setState({
+      [e.target.id]: e.target.value
+    });
   };
 
   onButtonClick = () => {

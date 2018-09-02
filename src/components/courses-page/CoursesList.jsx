@@ -3,23 +3,28 @@ import { connect } from 'react-redux';
 import CourseListItem from './CourseListItem';
 import { compose } from 'redux';
 import { firebaseConnect } from 'react-redux-firebase';
+import { getAllCourses } from '../../selectors/firebaseSelectors';
+
+const mapFirebaseCoursesToArray = firebaseCourses =>
+  Object.keys(firebaseCourses).map(courseId => ({
+    id: courseId,
+    name: firebaseCourses[courseId].name,
+    description: firebaseCourses[courseId].description
+  }));
 
 const CourseList = ({ courses }) => {
-  const arrayCourses = [];
-  Object.keys(courses).forEach(courseId => {
-    arrayCourses.push({
-      id: courseId,
-      description: courses[courseId].description,
-      name: courses[courseId].name
-    });
-  });
+  if (!courses) {
+    return null;
+  }
+
+  const courseArray = mapFirebaseCoursesToArray(courses);
 
   return (
     <div>
-      {arrayCourses.length === 0 ? (
+      {courseArray.length === 0 ? (
         <p>No courses</p>
       ) : (
-        arrayCourses.map(course => {
+        courseArray.map(course => {
           return <CourseListItem key={course.id} {...course} id={course.id} />;
         })
       )}
@@ -28,7 +33,7 @@ const CourseList = ({ courses }) => {
 };
 
 const mapStateToProps = state => ({
-  courses: state.firebase.data.courses
+  courses: getAllCourses(state)
 });
 
 export default compose(

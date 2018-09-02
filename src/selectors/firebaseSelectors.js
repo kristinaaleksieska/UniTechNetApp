@@ -2,7 +2,7 @@ const getFirebaseState = state => state.firebase;
 
 const getFirebaseData = state => getFirebaseState(state).data;
 
-const getUsers = state => getFirebaseData(state).users;
+export const getUsers = state => getFirebaseData(state).users;
 
 export const getFirebaseAuthDetails = state => getFirebaseState(state).auth;
 

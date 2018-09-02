@@ -1,4 +1,4 @@
-import database, { firebase } from '../../firebase/firebase';
+import { firebase } from '../../firebase/firebase';
 
 export const logout = () => dispatch =>
   firebase

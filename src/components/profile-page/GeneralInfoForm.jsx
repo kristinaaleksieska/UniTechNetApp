@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 import { compose } from 'redux';
 import { firebaseConnect } from 'react-redux-firebase';
 import CustomDatePicker from '../common/CustomDatePicker';
+import { getUsers } from '../../selectors/firebaseSelectors';
 
 import { firebase } from '../../firebase/firebase';
 
@@ -112,11 +113,10 @@ export class GeneralInfoForm extends React.Component {
 }
 
 const mapStateToProps = state => ({
-  users: state.firebase.data.users,
-  courses: state.firebase.data.courses
+  users: getUsers(state)
 });
 
 export default compose(
-  firebaseConnect(['users', 'courses']),
+  firebaseConnect(['users']),
   connect(mapStateToProps)
 )(GeneralInfoForm);
