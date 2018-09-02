@@ -1,13 +1,11 @@
 import React from 'react';
 import { compose } from 'redux';
 import styled from 'styled-components';
-import { firebaseConnect, isEmpty } from 'react-redux-firebase';
+import { firebaseConnect } from 'react-redux-firebase';
 import { connect } from 'react-redux';
 import { startUpdateGeneralInfo } from '../../actions/profile-page/generalInfoActions';
-import GeneralInfoForm from './GeneralInfoForm';
 
 import UserInfo from './components/user-info/UserInfo';
-
 // Selectors
 import { getCurrentUserDetails } from '../../selectors/firebaseSelectors';
 

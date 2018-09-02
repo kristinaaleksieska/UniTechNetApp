@@ -3,62 +3,99 @@ import CustomDatePicker from '../../../common/CustomDatePicker';
 import styled from 'styled-components';
 import TextField from '@material-ui/core/TextField';
 
+const EditUserContainer = styled.div`
+  margin-top: 10px;
+  flex-wrap: wrap;
+`;
+
+const TwoTextFieldsContainer = styled.div`
+  display: flex;
+  justify-content: space-between;
+`;
+
+const TextFieldContainer = styled.div`
+  padding: 5px;
+`;
+
+const StyledTextField = styled(TextField)`
+  padding: 5px;
+`;
+
 const EditableUserDetails = props => (
-  <div>
-    <TextField
-      value={props.user.name}
-      id="name"
-      onChange={props.onValueChange}
-      autoFocus
-      fullWidth
-      label="Name"
-    />
-    <TextField
-      value={props.user.surname}
-      id="surname"
-      onChange={props.onValueChange}
-      autoFocus
-      fullWidth
-      label="Surname"
-    />
-    <TextField
-      value={props.user.gender}
-      id="gender"
-      onChange={props.onValueChange}
-      autoFocus
-      fullWidth
-      label="Gender"
-    />
-    <TextField
-      value={props.user.title}
-      id="title"
-      onChange={props.onValueChange}
-      autoFocus
-      fullWidth
-      label="Title"
-    />
-    <TextField
-      value={props.user.username}
-      id="username"
-      onChange={props.onValueChange}
-      autoFocus
-      fullWidth
-      label="Username"
-    />
-    <TextField
-      value={props.user.phoneNumber}
-      id="phoneNumber"
-      onChange={props.onValueChange}
-      autoFocus
-      fullWidth
-      label="Phone Number"
-    />
+  <EditUserContainer>
+    <TwoTextFieldsContainer>
+      <TextFieldContainer>
+        <TextField
+          value={props.user.name}
+          id="name"
+          onChange={props.onValueChange}
+          autoFocus
+          fullWidth
+          label="Name"
+        />
+      </TextFieldContainer>
+      <TextFieldContainer>
+        <TextField
+          value={props.user.surname}
+          id="surname"
+          onChange={props.onValueChange}
+          autoFocus
+          fullWidth
+          label="Surname"
+        />
+      </TextFieldContainer>
+    </TwoTextFieldsContainer>
+    <TwoTextFieldsContainer>
+      <TextFieldContainer>
+        <TextField
+          value={props.user.gender}
+          id="gender"
+          onChange={props.onValueChange}
+          autoFocus
+          fullWidth
+          label="Gender"
+        />
+      </TextFieldContainer>
+      <TextFieldContainer>
+        <TextField
+          value={props.user.title}
+          id="title"
+          onChange={props.onValueChange}
+          autoFocus
+          fullWidth
+          label="Title"
+        />
+      </TextFieldContainer>
+    </TwoTextFieldsContainer>
+
+    <TwoTextFieldsContainer>
+      <TextFieldContainer>
+        <TextField
+          value={props.user.username}
+          id="username"
+          onChange={props.onValueChange}
+          autoFocus
+          fullWidth
+          label="Username"
+        />
+      </TextFieldContainer>
+      <TextFieldContainer>
+        <TextField
+          value={props.user.phoneNumber}
+          id="phoneNumber"
+          onChange={props.onValueChange}
+          autoFocus
+          fullWidth
+          label="Phone Number"
+        />
+      </TextFieldContainer>
+    </TwoTextFieldsContainer>
     <CustomDatePicker
       id="birthday"
       defaultDate={props.user.birthday}
       onChange={props.onValueChange}
     />
-  </div>
+  </EditUserContainer>
 );
 
 export default EditableUserDetails;
