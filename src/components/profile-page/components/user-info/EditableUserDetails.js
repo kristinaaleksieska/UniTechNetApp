@@ -17,10 +17,6 @@ const TextFieldContainer = styled.div`
   padding: 5px;
 `;
 
-const StyledTextField = styled(TextField)`
-  padding: 5px;
-`;
-
 const EditableUserDetails = props => (
   <EditUserContainer>
     <TwoTextFieldsContainer>
