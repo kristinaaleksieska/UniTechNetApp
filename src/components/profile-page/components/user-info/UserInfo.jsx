@@ -10,7 +10,7 @@ import styled from 'styled-components';
 import Button from '@material-ui/core/Button';
 import AccountCircle from '@material-ui/icons/AccountCircle';
 import EditIcon from '@material-ui/icons/Edit';
-import DefaultProfilePicture from '../../../../assets/images/LAUGHING.jpg';
+import DefaultProfilePicture from '../../../../assets/images/default-profile.jpg';
 
 const BackgroundContainer = styled.div`
   background-color: #fff;
@@ -71,16 +71,6 @@ class UserInfo extends React.Component {
     });
   };
 
-  onBirthdayChange = event => {
-    const birthday = event.target.value;
-    this.setState(() => ({
-      user: {
-        ...this.state.user,
-        birthday
-      }
-    }));
-  };
-
   editDetails = () => {
     this.setState({
       editable: true
@@ -109,6 +99,7 @@ class UserInfo extends React.Component {
       phoneNumber,
       birthday
     });
+
     this.setState({
       editable: false
     });

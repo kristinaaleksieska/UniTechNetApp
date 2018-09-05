@@ -6,23 +6,21 @@ import { startUpdateGeneralInfo } from '../../actions/profile-page/generalInfoAc
 import styled from 'styled-components';
 
 import UserInfo from './components/user-info/UserInfo';
-import UserCourses from './components/user-courses/UserCourses';
+import ListUserCourses from './components/user-courses/ListUserCourses';
 import ListUserExperiences from './components/user-experiences/ListUserExperiences';
 // Selectors
 import { getCurrentUserDetails } from '../../selectors/firebaseSelectors';
 
 const TwoCardsContainer = styled.div`
-  display: flex,
-  align-content: stretch;
-  align-items: center;
+  margin-top: 20px;
+  display: flex;
+  justify-content: space-around;
+  align-items: flex-start;
   flex-flow: wrap;
-  height: 500px;
 `;
 
 const CardContainer = styled.div`
-  padding: 5px;
-  float: left;
-  width: 40%;
+  width: 48%;
 `;
 
 class ProfilePage extends React.Component {
@@ -36,7 +34,7 @@ class ProfilePage extends React.Component {
         <UserInfo user={this.props.currentUser} />
         <TwoCardsContainer>
           <CardContainer>
-            <UserCourses user={this.props.currentUser} />
+            <ListUserCourses user={this.props.currentUser} />
           </CardContainer>
           <CardContainer>
             <ListUserExperiences user={this.props.currentUser} />

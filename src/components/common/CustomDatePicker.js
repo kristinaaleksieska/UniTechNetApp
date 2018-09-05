@@ -20,7 +20,7 @@ function DatePickers(props) {
   return (
     <TextField
       id={props.id || 'date'}
-      label="Birthday"
+      label={props.label}
       type="date"
       value={props.defaultDate}
       className={classes.textField}

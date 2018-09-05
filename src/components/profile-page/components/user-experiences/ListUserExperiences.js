@@ -3,21 +3,38 @@ import Loading from '../../../common/Loading';
 import { mapFirebaseExperiencesToArray } from '../../../../mappings-from-firebase/MappingsFromFirebase';
 import UserExperience from './UserExperience';
 import Card from '@material-ui/core/Card';
+import CardContent from '@material-ui/core/CardContent';
+import CardHeader from '@material-ui/core/CardHeader';
+import CardActions from '@material-ui/core/CardActions';
+import Button from '@material-ui/core/Button';
+import Avatar from '@material-ui/core/Avatar';
 
 const ListUserExperiences = ({ user }) => {
   if (!user) {
     return <Loading />;
   }
-
   const { experiences } = user;
+
   if (!experiences) {
     return <div>You have no experiences</div>;
   }
+
   return (
     <Card>
-      {mapFirebaseExperiencesToArray(experiences).map(experience => (
-        <UserExperience experience={experience} />
-      ))}
+      <CardHeader
+        title="Experience"
+        avatar={<Avatar aria-label="Experiences">E</Avatar>}
+      />
+      <CardContent>
+        {mapFirebaseExperiencesToArray(experiences).map(experience => (
+          <UserExperience key={experience.id} experience={experience} />
+        ))}
+      </CardContent>
+      <CardActions>
+        <Button color="primary" variant="flat">
+          ADD EXPERIENCE
+        </Button>
+      </CardActions>
     </Card>
   );
 };
