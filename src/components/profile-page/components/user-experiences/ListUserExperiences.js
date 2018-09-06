@@ -2,11 +2,10 @@ import React from 'react';
 import Loading from '../../../common/Loading';
 import { mapFirebaseExperiencesToArray } from '../../../../mappings-from-firebase/MappingsFromFirebase';
 import UserExperience from './UserExperience';
+import AddExperience from './AddExperience';
 import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
 import CardHeader from '@material-ui/core/CardHeader';
-import CardActions from '@material-ui/core/CardActions';
-import Button from '@material-ui/core/Button';
 import Avatar from '@material-ui/core/Avatar';
 
 const ListUserExperiences = ({ user }) => {
@@ -30,12 +29,9 @@ const ListUserExperiences = ({ user }) => {
           <UserExperience key={experience.id} experience={experience} />
         ))}
       </CardContent>
-      <CardActions>
-        <Button color="primary" variant="flat">
-          ADD EXPERIENCE
-        </Button>
-      </CardActions>
+      <AddExperience />
     </Card>
   );
 };
+
 export default ListUserExperiences;

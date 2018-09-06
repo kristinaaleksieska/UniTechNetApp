@@ -1,7 +1,7 @@
 import database from '../../firebase/firebase';
 
 export const updateExperience = (uid, experience) => dispatch => {
-  console.log(experience);
+  console.log('TUKA');
   experience.endDate = experience.endDate ? experience.endDate : '';
   experience.company = experience.company ? experience.company : '';
   experience.startDate = experience.startDate ? experience.startDate : '';
@@ -20,6 +20,6 @@ export const addExperience = (uid, experience) => dispatch => {
     .ref(`users/${uid}/experiences`)
     .push(experience)
     .then(ref => {
-      updateExperience(uid, {...experience, id: ref.key})
+      updateExperience(uid, { ...experience, id: ref.key });
     });
 };

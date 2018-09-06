@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 import Loading from '../../../common/Loading';
-import E from './AddExperience';
+import ExperienceForm from './ExperienceForm';
 import {
   updateExperience,
   removeExperience
@@ -49,41 +49,29 @@ class UserExperience extends React.Component {
     super(props);
 
     this.state = {
-      editable: false,
-      experience: props.experience
+      editable: false
     };
   }
 
-  onValueChangeee = e => {
-    this.setState({
-      experience: {
-        ...this.state.experience,
-        [e.target.id]: e.target.value
-      }
-    });
-    console.log('triggered')
-  };
-
-  EditExperience = () => {
+  EditExperience = experience => {
     const { uid } = this.props;
-    this.props.updateExperience(uid, {...this.state.experience});
+    this.props.updateExperience(uid, experience);
 
     this.setState({ editable: false });
   };
 
   render() {
-    const { experience, editable } = this.state;
-    const { uid } = this.props;
+    const { editable } = this.state;
+    const { uid, experience } = this.props;
 
     if (!experience) return <Loading />;
 
     return (
       <ExperienceContainer>
         {editable ? (
-          <E
+          <ExperienceForm
             experience={experience}
             handleAction={this.EditExperience}
-            onValueChange={this.onValueChangeee}
           />
         ) : (
           <ExperienceWrapper>

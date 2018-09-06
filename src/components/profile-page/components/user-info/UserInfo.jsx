@@ -3,6 +3,8 @@ import { firebase } from '../../../../firebase/firebase';
 import 'firebase/auth';
 import { connect } from 'react-redux';
 import { startUpdateGeneralInfo } from '../../../../actions/profile-page/generalInfoActions';
+import { addConnection } from '../../../../actions/profile-page/connectionActions';
+import { userLoggedIn } from '../../../../selectors/firebaseSelectors';
 import EditableUserDetails from './EditableUserDetails';
 import UserDetails from './UserDetails';
 import Loading from '../../../common/Loading';
@@ -42,6 +44,7 @@ const Actions = styled.div`
 class UserInfo extends React.Component {
   state = {
     editable: false,
+    isConnected: false,
     isCurrentUser: false,
     user: {}
   };
@@ -105,21 +108,29 @@ class UserInfo extends React.Component {
     });
   };
 
-  addConnection = () => {};
+  addConnection = () => {
+    this.props.addConnection(this.props.userLoggedIn, this.state.user.id);
+  };
+
+  sendMessage = () => {};
 
   generateActionButton = () => {
-    const { isCurrentUser, editable } = this.state;
+    const { isCurrentUser, editable, isConnected } = this.state;
     const buttonIcon = isCurrentUser ? <EditIcon /> : <AccountCircle />;
     const buttonText = isCurrentUser
       ? editable
         ? 'UPDATE'
         : 'EDIT DETAILS'
-      : 'ADD CONNECTION';
+      : isConnected
+        ? 'SEND MESSAGE'
+        : 'ADD CONNECTION';
     const buttonAction = isCurrentUser
       ? editable
         ? this.updateDetails
         : this.editDetails
-      : this.addConnection;
+      : isConnected
+        ? this.sendMessage
+        : this.addConnection;
 
     return (
       <Button onClick={buttonAction} variant="raised" color="primary">
@@ -158,12 +169,16 @@ class UserInfo extends React.Component {
   }
 }
 
-const mapDispatchToProps = dispatch => ({
-  startUpdateGeneralInfo: updatedGeneralInfo =>
-    dispatch(startUpdateGeneralInfo(updatedGeneralInfo))
+const mapDispatchToProps = {
+  startUpdateGeneralInfo,
+  addConnection
+};
+
+const mapStateToProps = state => ({
+  userLoggedIn: userLoggedIn(state)
 });
 
 export default connect(
-  null,
+  mapStateToProps,
   mapDispatchToProps
 )(UserInfo);

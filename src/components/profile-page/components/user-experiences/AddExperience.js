@@ -1,73 +1,60 @@
 import React from 'react';
-import CustomDatePicker from '../../../common/CustomDatePicker';
-import TextField from '@material-ui/core/TextField';
-import styled from 'styled-components';
+import { connect } from 'react-redux';
+import ExperienceForm from './ExperienceForm';
 import Button from '@material-ui/core/Button';
-import Done from '@material-ui/icons/Done';
+import { userLoggedIn } from '../../../../selectors/firebaseSelectors';
+import { addExperience } from '../../../../actions/profile-page/experienceActions';
+import CardActions from '@material-ui/core/CardActions';
+import styled from 'styled-components';
 
-const DoneIcon = <Done />;
-
-const AddOrEditExperience = styled.div`
-  margin-top: 10px;
-  flex-wrap: wrap;
-`;
-
-const TwoTextFieldsContainer = styled.div`
+const ExperienceContainer = styled.div`
   display: flex;
-  justify-content: space-between;
+  padding: 8px 0;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.38);
+  padding-right: 15px;
 `;
 
-const TextFieldContainer = styled.div`
-  padding: 5px;
-`;
+class AddExperience extends React.Component {
+  state = {
+    addable: false
+  };
 
-const E = props => { 
-  console.log(props.onValueChange);
-  console.log(props.handleAction)
+  addExperience = experience => {
+    this.props.addExperience(this.props.uid, experience);
+    this.setState({ addable: false });
+  };
 
-  return (
-    <AddOrEditExperience>
-      <TwoTextFieldsContainer>
-        <TextFieldContainer>
-          <TextField
-            value={props.experience.jobTitle}
-            id="jobTitle"
-            onChange={props.onValueChange}
-            autoFocus
-            fullWidth
-            label="Job Title"
-          />
-        </TextFieldContainer>
-        <TextFieldContainer>
-          <TextField
-            value={props.experience.company}
-            id="company"
-            onChange={props.onValueChange}
-            autoFocus
-            fullWidth
-            label="Company"
-          />
-        </TextFieldContainer>
-      </TwoTextFieldsContainer>
-      <TwoTextFieldsContainer>
-        <CustomDatePicker
-          id="startDate"
-          defaultDate={props.experience.startDate}
-          onChange={props.onValueChange}
-          label="Start Date"
-        />
-        <CustomDatePicker
-          id="endDate"
-          defaultDate={props.experience.endDate}
-          onChange={props.onValueChange}
-          label="End Date"
-        />
-      </TwoTextFieldsContainer>
-      <Button onClick={props.handleAction} variant="raised" color="primary">
-        {DoneIcon}
-      </Button>
-    </AddOrEditExperience>
-  );
+  render() {
+    const { addable } = this.state;
+    return (
+      <ExperienceContainer>
+        {addable ? (
+          <ExperienceForm handleAction={this.addExperience} />
+        ) : (
+          <CardActions>
+            <Button
+              color="primary"
+              variant="flat"
+              onClick={() => this.setState({ addable: true })}
+            >
+              ADD EXPERIENCE
+            </Button>
+          </CardActions>
+        )}
+      </ExperienceContainer>
+    );
+  }
+}
+
+const mapStateToProps = state => ({
+  uid: userLoggedIn(state)
+});
+
+const mapDispatchToProps = {
+  addExperience
 };
 
-export default E;
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(AddExperience);
