@@ -6,6 +6,15 @@ import CourseListItem from './CourseListItem';
 import Loading from '../common/CustomDatePicker';
 import { getAllCourses } from '../../selectors/firebaseSelectors';
 import { mapFirebaseCoursesToArray } from '../../mappings-from-firebase/MappingsFromFirebase';
+import styled from 'styled-components';
+
+const TwoCardsContainer = styled.div`
+  margin-top: 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  flex-flow: wrap;
+`;
 
 const CourseList = ({ courses }) => {
   if (!courses) {
@@ -15,7 +24,7 @@ const CourseList = ({ courses }) => {
   const courseArray = mapFirebaseCoursesToArray(courses);
 
   return (
-    <div>
+    <TwoCardsContainer>
       {courseArray.length === 0 ? (
         <p>No courses</p>
       ) : (
@@ -23,7 +32,7 @@ const CourseList = ({ courses }) => {
           return <CourseListItem key={course.id} {...course} id={course.id} />;
         })
       )}
-    </div>
+    </TwoCardsContainer>
   );
 };
 

@@ -45,10 +45,6 @@ const ButtonContainer = styled.div`
 `;
 
 class UserExperience extends React.Component {
-  state = {
-    editable: false
-  };
-
   constructor(props) {
     super(props);
 
@@ -58,21 +54,19 @@ class UserExperience extends React.Component {
     };
   }
 
-  onValueChange = e => {
-    console.log(e.target.value);
+  onValueChangeee = e => {
     this.setState({
       experience: {
         ...this.state.experience,
         [e.target.id]: e.target.value
       }
     });
+    console.log('triggered')
   };
 
   EditExperience = () => {
-    console.log('tuka');
     const { uid } = this.props;
-    console.log('UID IS ' + uid);
-    this.props.updateExperience(uid, ...this.state.experience);
+    this.props.updateExperience(uid, {...this.state.experience});
 
     this.setState({ editable: false });
   };
@@ -83,14 +77,13 @@ class UserExperience extends React.Component {
 
     if (!experience) return <Loading />;
 
-    console.log(experience);
     return (
       <ExperienceContainer>
         {editable ? (
           <E
             experience={experience}
             handleAction={this.EditExperience}
-            onValueChanged={this.onValueChange}
+            onValueChange={this.onValueChangeee}
           />
         ) : (
           <ExperienceWrapper>

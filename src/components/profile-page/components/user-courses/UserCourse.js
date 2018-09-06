@@ -51,7 +51,6 @@ const UserCourse = ({ course }) => (
       <ButtonContainer>
         <Link to={`/courses/${course.id}`}>
           <Button
-            onClick={console.log('gegegege')}
             variant="flat"
             color="primary"
           >

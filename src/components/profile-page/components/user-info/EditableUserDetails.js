@@ -2,7 +2,6 @@ import React from 'react';
 import CustomDatePicker from '../../../common/CustomDatePicker';
 import styled from 'styled-components';
 import TextField from '@material-ui/core/TextField';
-import Done from '@material-ui/icons/Done';
 
 const EditUserContainer = styled.div`
   margin-top: 10px;
@@ -91,6 +90,7 @@ const EditableUserDetails = props => (
       id="birthday"
       defaultDate={props.user.birthday}
       onChange={props.onValueChange}
+      label = "Birthday"
     />
   </EditUserContainer>
 );

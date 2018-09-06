@@ -21,15 +21,16 @@ const TextFieldContainer = styled.div`
   padding: 5px;
 `;
 
-const E = props => {
-  const { experience } = props;
+const E = props => { 
+  console.log(props.onValueChange);
+  console.log(props.handleAction)
 
   return (
     <AddOrEditExperience>
       <TwoTextFieldsContainer>
         <TextFieldContainer>
           <TextField
-            value={experience.jobTitle}
+            value={props.experience.jobTitle}
             id="jobTitle"
             onChange={props.onValueChange}
             autoFocus
@@ -39,7 +40,7 @@ const E = props => {
         </TextFieldContainer>
         <TextFieldContainer>
           <TextField
-            value={experience.company}
+            value={props.experience.company}
             id="company"
             onChange={props.onValueChange}
             autoFocus
@@ -50,14 +51,14 @@ const E = props => {
       </TwoTextFieldsContainer>
       <TwoTextFieldsContainer>
         <CustomDatePicker
-          id="birthday"
-          defaultDate={experience.startDate}
+          id="startDate"
+          defaultDate={props.experience.startDate}
           onChange={props.onValueChange}
           label="Start Date"
         />
         <CustomDatePicker
-          id="birthday"
-          defaultDate={experience.endDate ? experience.endDate : ''}
+          id="endDate"
+          defaultDate={props.experience.endDate}
           onChange={props.onValueChange}
           label="End Date"
         />
