@@ -1,28 +1,28 @@
-const getFirebaseState = state => state.firebase;
+import { mapFirebaseCoursesToArray, mapSubscribedUsersToArray } from '../mappings-from-firebase/MappingsFromFirebase';
 
-const getFirebaseData = state => getFirebaseState(state).data;
+const getFirebaseState = (state) => state.firebase;
 
-export const getUsers = state => getFirebaseData(state).users;
+const getFirebaseData = (state) => getFirebaseState(state).data;
 
-export const getFirebaseAuthDetails = state => getFirebaseState(state).auth;
+export const getUsers = (state) => getFirebaseData(state).users;
 
-export const isFirebaseUserLoggedIn = state =>
-  !getFirebaseAuthDetails(state).isEmpty;
+export const getFirebaseAuthDetails = (state) => getFirebaseState(state).auth;
 
-export const userLoggedIn = state => getFirebaseState(state).auth.uid;
+export const isFirebaseUserLoggedIn = (state) => !getFirebaseAuthDetails(state).isEmpty;
 
-export const getCurrentUserDetails = state => {
-  const currentUserUid = userLoggedIn(state);
-  const users = getUsers(state);
+export const userLoggedIn = (state) => getFirebaseState(state).auth.uid;
 
-  if (!users) {
-    return null;
-  }
+export const getCurrentUserDetails = (state) => {
+	const currentUserUid = userLoggedIn(state);
+	const users = getUsers(state);
 
-  return users[currentUserUid];
+	if (!users) {
+		return null;
+	}
+
+	return users[currentUserUid];
 };
 
-export const getAllCourses = state => getFirebaseData(state).courses;
+export const getAllCourses = (state) => getFirebaseData(state).courses;
 
-export const getCoursesCurrentUserIsSubscribedTo = state =>
-  getCurrentUserDetails(state).courses;
+export const getCoursesCurrentUserIsSubscribedTo = (state) => getCurrentUserDetails(state).courses;

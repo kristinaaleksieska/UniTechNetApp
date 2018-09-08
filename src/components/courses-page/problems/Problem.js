@@ -10,7 +10,11 @@ import Avatar from '@material-ui/core/Avatar';
 
 const GoToProblemIcon = <Input />;
 
-const CardContainer = styled.div`width: 90%;`;
+const CardContainer = styled.div`
+	width: 90%;
+	align-self: center;
+	padding-top: 10px;
+`;
 
 const ElementContainer = styled.div`
 	display: flex;
@@ -48,6 +52,5 @@ const Problem = (props) => {
 		</CardContainer>
 	);
 };
-const mapDispatchToProps = {};
-const mapStateToProps = {};
+
 export default Problem;
