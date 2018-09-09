@@ -64,7 +64,8 @@ export const getCourseById = (courseId) => (state) => {
 				authorId: course.problems[problemId].authorId,
 				description: course.problems[problemId].description,
 				name: course.problems[problemId].name,
-				date: course.problems[problemId].date
+				date: course.problems[problemId].date,
+				answers: course.problems[problemId].answers
 			}))
 		: [];
 
@@ -165,4 +166,33 @@ export const getProblemByCourseAndProblemIds = (courseId, problemId) => (state) 
 	}
 
 	return problem;
+};
+
+export const getAnswersByCourseAndProblemsId = (courseId, problemId) => (state) => {
+	const problem = getProblemByCourseAndProblemIds(courseId, problemId)(state);
+
+	if (!problem) {
+		return null;
+	}
+
+	const { answers } = problem;
+
+	const problemAnswers = answers
+		? Object.keys(answers).map((answerId) => ({
+				id: answerId,
+				author: mapAuthor(answers[answerId].author),
+				description: answers[answerId].description,
+				date: answers[answerId].date
+			}))
+		: [];
+	return _orderBy(problemAnswers, [ (answer) => moment.utc(answer.date).valueOf() ], [ 'desc' ]);
+};
+
+const mapAuthor = (author) => Object.keys(author)[0];
+
+export const getAuthorIdOfAComment = (courseId, problemId, answerId) => (state) => {
+	const problemAnsweres = getAnswersByCourseAndProblemsId(courseId, problemId)(state);
+	const answer = problemAnsweres[answerId];
+
+	return answer.author.id;
 };

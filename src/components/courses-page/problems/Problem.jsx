@@ -64,7 +64,9 @@ const Problem = (props) => {
 									</Button>
 								</Link>
 								{props.authorId === props.currentUserId && (
-									<Button onClick={deleteProblem}>{DeleteIcon}</Button>
+									<Button color="primary" onClick={deleteProblem}>
+										{DeleteIcon}
+									</Button>
 								)}
 							</React.Fragment>
 						)}
