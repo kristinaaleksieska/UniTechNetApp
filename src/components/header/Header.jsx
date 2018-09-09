@@ -1,5 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
+import _find from 'lodash/find';
+import { withRouter } from 'react-router';
 import 'firebase/auth';
 import { logout } from '../../actions/logout/logoutActions';
 import { connect } from 'react-redux';
@@ -14,33 +16,40 @@ const StyledTypography = styled(Typography)`
   flex-grow: 1;
 `;
 
-const Header = ({ title, onMenuButtonClick, logout }) => {
-  return (
-    <AppBar position="static">
-      <Toolbar>
-        <IconButton
-          onClick={onMenuButtonClick(true)}
-          aria-label="MenuDrawer"
-          color="secondary"
-        >
-          <MenuIcon />
-        </IconButton>
-        <StyledTypography variant="title" color="secondary">
-          {title}
-        </StyledTypography>
-        <Button variant="flat" color="secondary" onClick={logout}>
-          LOGOUT
-        </Button>
-      </Toolbar>
-    </AppBar>
-  );
+const Titles = {
+	'/profilepage': 'Profile',
+	'/courses/': 'Course',
+	'/courses': 'Courses',
+	'/feed': 'Feed'
+};
+
+const getTitleFromPathname = (pathname) => {
+	const titleKey = _find(Object.keys(Titles), (titleKey) => pathname.includes(titleKey));
+
+	return titleKey ? Titles[titleKey] : 'Title';
+};
+
+const Header = ({ onMenuButtonClick, logout, location }) => {
+	const title = getTitleFromPathname(location.pathname);
+	return (
+		<AppBar position="static">
+			<Toolbar>
+				<IconButton onClick={onMenuButtonClick(true)} aria-label="MenuDrawer" color="secondary">
+					<MenuIcon />
+				</IconButton>
+				<StyledTypography variant="title" color="secondary">
+					{title}
+				</StyledTypography>
+				<Button variant="flat" color="secondary" onClick={logout}>
+					LOGOUT
+				</Button>
+			</Toolbar>
+		</AppBar>
+	);
 };
 
 const mapDispatchToProps = {
-  logout
+	logout
 };
 
-export default connect(
-  null,
-  mapDispatchToProps
-)(Header);
+export default withRouter(connect(null, mapDispatchToProps)(Header));

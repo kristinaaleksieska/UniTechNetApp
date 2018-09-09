@@ -12,54 +12,45 @@ import ListUserExperiences from './components/user-experiences/ListUserExperienc
 import { getCurrentUserDetails } from '../../selectors/firebaseSelectors';
 
 const TwoCardsContainer = styled.div`
-  margin-top: 20px;
-  display: flex;
-  justify-content: space-around;
-  align-items: flex-start;
-  flex-flow: wrap;
+	margin-top: 20px;
+	display: flex;
+	justify-content: space-around;
+	align-items: flex-start;
+	flex-flow: wrap;
 `;
 
-const CardContainer = styled.div`
-  width: 48%;
-`;
+const CardContainer = styled.div`width: 48%;`;
 
 class ProfilePage extends React.Component {
-  onSubmit = updatedGeneralInfo => {
-    this.props.startUpdateGeneralInfo(updatedGeneralInfo);
-  };
+	onSubmit = (updatedGeneralInfo) => {
+		this.props.startUpdateGeneralInfo(updatedGeneralInfo);
+	};
 
-  render() {
-    return (
-      <div>
-        <UserInfo user={this.props.currentUser} />
-        <TwoCardsContainer>
-          <CardContainer>
-            <ListUserCourses user={this.props.currentUser} />
-          </CardContainer>
-          <CardContainer>
-            <ListUserExperiences user={this.props.currentUser} />
-          </CardContainer>
-        </TwoCardsContainer>
-      </div>
-    );
-  }
+	render() {
+		return (
+			<div>
+				<UserInfo user={this.props.currentUser} />
+				<TwoCardsContainer>
+					<CardContainer>
+						<ListUserCourses user={this.props.currentUser} />
+					</CardContainer>
+					<CardContainer>
+						<ListUserExperiences user={this.props.currentUser} />
+					</CardContainer>
+				</TwoCardsContainer>
+			</div>
+		);
+	}
 }
 
-const mapStateToProps = state => ({
-  currentUser: getCurrentUserDetails(state)
+const mapStateToProps = (state) => ({
+	currentUser: getCurrentUserDetails(state)
 });
 
-const mapDispatchToProps = dispatch => ({
-  startUpdateGeneralInfo: updatedGeneralInfo =>
-    dispatch(startUpdateGeneralInfo(updatedGeneralInfo))
+const mapDispatchToProps = (dispatch) => ({
+	startUpdateGeneralInfo: (updatedGeneralInfo) => dispatch(startUpdateGeneralInfo(updatedGeneralInfo))
 });
 
-const composer = compose(
-  firebaseConnect(['users']),
-  connect(
-    mapStateToProps,
-    mapDispatchToProps
-  )
-);
+const composer = compose(firebaseConnect([ 'users' ]), connect(mapStateToProps, mapDispatchToProps));
 
 export default composer(ProfilePage);

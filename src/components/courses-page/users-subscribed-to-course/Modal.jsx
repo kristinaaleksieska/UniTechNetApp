@@ -1,14 +1,10 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
+import { Link } from 'react-router-dom';
 import Typography from '@material-ui/core/Typography';
 import Modal from '@material-ui/core/Modal';
-import Button from '@material-ui/core/Button';
-import Loading from '../../common/Loading';
-
-function rand() {
-	return Math.round(Math.random() * 20) - 10;
-}
+import CardHeader from '@material-ui/core/CardHeader';
+import Avatar from '@material-ui/core/Avatar';
 
 function getModalStyle() {
 	const top = 50;
@@ -31,6 +27,7 @@ const styles = (theme) => ({
 });
 
 const SimpleModal = (props) => {
+	const { users } = props;
 	return (
 		<div>
 			<Modal
@@ -44,11 +41,23 @@ const SimpleModal = (props) => {
 						<b>Course subscribers:</b>
 					</Typography>
 					<Typography variant="subheading" id="simple-modal-description">
-						{Array.isArray(props.users) ? (
-							props.users.map((user) => <div>{user}</div>)
-						) : (
-							<div>{props.users}</div>
-						)}
+						{users.map((user) => {
+							let title = `${user.name} ${user.surname}`;
+
+							if (props.currentUserId === user.id) {
+								title = `${title} (me)`;
+							}
+
+							return (
+								<Link to={`/users/${user.id}`} style={{ textDecoration: 'none' }}>
+									<CardHeader
+										key={user.id}
+										title={title}
+										avatar={<Avatar aria-label="Profile Picture">{user.name[0]}</Avatar>}
+									/>
+								</Link>
+							);
+						})}
 					</Typography>
 				</div>
 			</Modal>

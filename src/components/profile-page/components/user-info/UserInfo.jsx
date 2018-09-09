@@ -14,171 +14,145 @@ import AccountCircle from '@material-ui/icons/AccountCircle';
 import EditIcon from '@material-ui/icons/Edit';
 import DefaultProfilePicture from '../../../../assets/images/default-profile.jpg';
 
-const BackgroundContainer = styled.div`
-  background-color: #fff;
-`;
+const BackgroundContainer = styled.div`background-color: #fff;`;
 
 const ContentContainer = styled.div`
-  width: 50%;
-  margin: 20px auto 0 auto;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-direction: column;
+	width: 50%;
+	margin: 20px auto 0 auto;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	flex-direction: column;
 `;
 
 const ProfilePicture = styled.img`
-  border-radius: 50%;
-  width: 20%;
+	border-radius: 50%;
+	width: 20%;
 `;
 
-const UserDetailsContainer = styled.div`
-  text-align: center;
-`;
+const UserDetailsContainer = styled.div`text-align: center;`;
 
 const Actions = styled.div`
-  margin-top: 10px;
-  text-align: center;
+	margin-top: 10px;
+	text-align: center;
 `;
 
 class UserInfo extends React.Component {
-  state = {
-    editable: false,
-    isConnected: false,
-    isCurrentUser: false,
-    user: {}
-  };
+	state = {
+		editable: false,
+		isConnected: false,
+		isCurrentUser: false,
+		user: {}
+	};
 
-  static getDerivedStateFromProps(nextProps, prevState) {
-    if (!nextProps.user) {
-      return prevState;
-    }
-    let newState = {
-      ...prevState,
-      isCurrentUser: firebase.auth().currentUser.uid === nextProps.user.id
-    };
+	static getDerivedStateFromProps(nextProps, prevState) {
+		if (!nextProps.user) {
+			return prevState;
+		}
+		let newState = {
+			...prevState,
+			isCurrentUser: firebase.auth().currentUser.uid === nextProps.user.id
+		};
 
-    if (Object.keys(newState.user).length === 0) {
-      newState = { ...newState, user: nextProps.user };
-    }
+		if (Object.keys(newState.user).length === 0) {
+			newState = { ...newState, user: nextProps.user };
+		}
 
-    return newState;
-  }
+		return newState;
+	}
 
-  onValueChange = e => {
-    this.setState({
-      user: {
-        ...this.state.user,
-        [e.target.id]: e.target.value
-      }
-    });
-  };
+	onValueChange = (e) => {
+		this.setState({
+			user: {
+				...this.state.user,
+				[e.target.id]: e.target.value
+			}
+		});
+	};
 
-  editDetails = () => {
-    this.setState({
-      editable: true
-    });
-  };
+	editDetails = () => {
+		this.setState({
+			editable: true
+		});
+	};
 
-  updateDetails = () => {
-    const {
-      id,
-      name,
-      surname,
-      gender,
-      title,
-      username,
-      phoneNumber,
-      birthday
-    } = this.state.user;
+	updateDetails = () => {
+		const { id, name, surname, gender, title, username, phoneNumber, birthday } = this.state.user;
 
-    this.props.startUpdateGeneralInfo({
-      id: firebase.auth().currentUser.uid,
-      name,
-      surname,
-      gender,
-      title,
-      username,
-      phoneNumber,
-      birthday
-    });
+		this.props.startUpdateGeneralInfo({
+			id: firebase.auth().currentUser.uid,
+			name,
+			surname,
+			gender,
+			title,
+			username,
+			phoneNumber,
+			birthday
+		});
 
-    this.setState({
-      editable: false
-    });
-  };
+		this.setState({
+			editable: false
+		});
+	};
 
-  addConnection = () => {
-    this.props.addConnection(this.props.userLoggedIn, this.state.user.id);
-  };
+	addConnection = () => {
+		this.props.addConnection(this.props.userLoggedIn, this.state.user.id);
+	};
 
-  sendMessage = () => {};
+	sendMessage = () => {};
 
-  generateActionButton = () => {
-    const { isCurrentUser, editable, isConnected } = this.state;
-    const buttonIcon = isCurrentUser ? <EditIcon /> : <AccountCircle />;
-    const buttonText = isCurrentUser
-      ? editable
-        ? 'UPDATE'
-        : 'EDIT DETAILS'
-      : isConnected
-        ? 'SEND MESSAGE'
-        : 'ADD CONNECTION';
-    const buttonAction = isCurrentUser
-      ? editable
-        ? this.updateDetails
-        : this.editDetails
-      : isConnected
-        ? this.sendMessage
-        : this.addConnection;
+	generateActionButton = () => {
+		const { isCurrentUser, editable } = this.state;
+		const { isConnected } = this.props;
+		const buttonIcon = isCurrentUser ? <EditIcon /> : <AccountCircle />;
+		const buttonText = isCurrentUser ? (editable ? 'UPDATE' : 'EDIT DETAILS') : 'SEND MESSAGE';
+		const buttonAction = isCurrentUser ? (editable ? this.updateDetails : this.editDetails) : this.sendMessage;
 
-    return (
-      <Button onClick={buttonAction} variant="raised" color="primary">
-        {buttonIcon}
-        {buttonText}
-      </Button>
-    );
-  };
+		if (!isCurrentUser && !isConnected) {
+			return null;
+		}
 
-  render() {
-    const { user } = this.props;
-    const { editable, user: userFromState } = this.state;
-    // FIXME: Temporary fix, make progress dialog bigger and global
-    if (!user) {
-      return <Loading />;
-    }
+		return (
+			<Button onClick={buttonAction} variant="raised" color="primary">
+				{buttonIcon}
+				{buttonText}
+			</Button>
+		);
+	};
 
-    return (
-      <BackgroundContainer>
-        <ContentContainer>
-          <ProfilePicture src={DefaultProfilePicture} />
-          <UserDetailsContainer>
-            {editable ? (
-              <EditableUserDetails
-                onValueChange={this.onValueChange}
-                user={userFromState}
-              />
-            ) : (
-              <UserDetails user={userFromState} />
-            )}
-          </UserDetailsContainer>
-          <Actions>{this.generateActionButton()}</Actions>
-        </ContentContainer>
-      </BackgroundContainer>
-    );
-  }
+	render() {
+		const { user } = this.props;
+		const { editable, user: userFromState } = this.state;
+		// FIXME: Temporary fix, make progress dialog bigger and global
+		if (!user) {
+			return <Loading />;
+		}
+
+		return (
+			<BackgroundContainer>
+				<ContentContainer>
+					<ProfilePicture src={DefaultProfilePicture} />
+					<UserDetailsContainer>
+						{editable ? (
+							<EditableUserDetails onValueChange={this.onValueChange} user={userFromState} />
+						) : (
+							<UserDetails user={userFromState} />
+						)}
+					</UserDetailsContainer>
+					<Actions>{this.generateActionButton()}</Actions>
+				</ContentContainer>
+			</BackgroundContainer>
+		);
+	}
 }
 
 const mapDispatchToProps = {
-  startUpdateGeneralInfo,
-  addConnection
+	startUpdateGeneralInfo,
+	addConnection
 };
 
-const mapStateToProps = state => ({
-  userLoggedIn: userLoggedIn(state)
+const mapStateToProps = (state) => ({
+	userLoggedIn: userLoggedIn(state)
 });
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(UserInfo);
+export default connect(mapStateToProps, mapDispatchToProps)(UserInfo);

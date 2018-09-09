@@ -1,12 +1,11 @@
 import React from 'react';
-import { getAllCourses, getUsers } from '../../selectors/firebaseSelectors';
 import {
-	mapFirebaseCoursesToArray,
-	mapFirebaseProblemsToArray,
-	mapSubscribedUsersToArray
-} from '../../mappings-from-firebase/MappingsFromFirebase';
+	getCurrentUserDetails,
+	getSubscribedUsersForCourse,
+	getCourseById,
+	isCurrentUserSubscribedToCourse
+} from '../../selectors/firebaseSelectors';
 import { subscribeToCourse, unsubscribeFromCourse } from '../../actions/courses/courses';
-import { getCurrentUserDetails } from '../../selectors/firebaseSelectors';
 import Loading from '../common/Loading';
 import Problem from './problems/Problem';
 import { connect } from 'react-redux';
@@ -14,8 +13,8 @@ import { compose } from 'redux';
 import { firebaseConnect } from 'react-redux-firebase';
 import styled from 'styled-components';
 import Button from '@material-ui/core/Button';
-import Typography from '@material-ui/core/Typography';
 import Modal from './users-subscribed-to-course/Modal';
+import ProblemModalForm from './problems/ProblemModalForm';
 
 const Container = styled.div`
 	display: flex;
@@ -42,20 +41,15 @@ const Actions = styled.div`
 `;
 
 class Course extends React.Component {
-	constructor(props) {
-		super(props);
-
-		this.state = {
-			isSubscribed: false,
-			isModalOpen: false,
-			currentUser: props.currentUser
-		};
-	}
+	state = {
+		isModalOpen: false,
+		isAddProblemModalOpen: false
+	};
 
 	generateSubscribeButton = () => {
-		const { isSubscribed } = this.state;
-		const buttonText = isSubscribed ? 'UNSUBSCRIBE' : 'SUBSCRIBE';
-		const buttonAction = isSubscribed ? this.unsubscribeFromCourse : this.subscribeToCoursee;
+		const { isCurrentUserSubscribed } = this.props;
+		const buttonText = isCurrentUserSubscribed ? 'UNSUBSCRIBE' : 'SUBSCRIBE';
+		const buttonAction = isCurrentUserSubscribed ? this.unsubscribeFromCourse : this.subscribeToCourse;
 
 		return (
 			<Button onClick={buttonAction} variant="raised" color="primary">
@@ -65,30 +59,34 @@ class Course extends React.Component {
 	};
 
 	unsubscribeFromCourse = () => {
-		console.log(this.props.params.id);
-		this.props.unsubscribeFromCourse(this.state.currentUser.key, this.props.match.params.id);
+		this.props.unsubscribeFromCourse(this.props.currentUser.id, this.props.match.params.id);
 	};
-	subscribeToCoursee = () => {
-		console.log(this.props.match.params.id);
-		this.props.subscribeToCourse(this.state.currentUser.id, this.props.match.params.id);
+	subscribeToCourse = () => {
+		this.props.subscribeToCourse(this.props.currentUser.id, this.props.match.params.id);
 	};
 
 	render() {
-		const { courses } = this.props;
+		const { course, subscribedUsers, isCurrentUserSubscribed, currentUser } = this.props;
 
-		if (!courses) {
+		if (!course) {
 			return <Loading />;
 		}
 
-		const course = mapFirebaseCoursesToArray(courses).find((course) => course.id === this.props.match.params.id);
-		const users = mapSubscribedUsersToArray(course.subscribedUsers);
-
-		const courseProblems = course.problems
-			? mapFirebaseProblemsToArray(course.problems)
-			: 'There are no problems for this course';
-
 		return (
 			<CourseContainer>
+				<Modal
+					shouldBeOpen={this.state.isModalOpen}
+					handleClose={() => this.setState({ isModalOpen: false })}
+					users={subscribedUsers}
+					currentUserId={currentUser.id}
+				/>
+				<ProblemModalForm
+					shouldBeOpen={this.state.isAddProblemModalOpen}
+					handleClose={() => this.setState({ isAddProblemModalOpen: false })}
+					title="Add a problem"
+					userId={currentUser.id}
+					courseId={course.id}
+				/>
 				<Container>
 					<h2 align="center">{course.name}</h2>
 
@@ -99,21 +97,32 @@ class Course extends React.Component {
 								VIEW MEMBERS
 							</Button>
 						</Actions>
+						{isCurrentUserSubscribed && (
+							<Actions>
+								<Button
+									variant="flat"
+									color="primary"
+									onClick={() => this.setState({ isAddProblemModalOpen: true })}
+								>
+									Add a problem
+								</Button>
+							</Actions>
+						)}
 					</ActionContainer>
-					{this.state.isModalOpen && (
-						<Modal
-							shouldBeOpen={this.state.isModalOpen}
-							handleClose={() => this.setState({ isModalOpen: false })}
-							users={users}
-						/>
-					)}
 				</Container>
-				{!Array.isArray(courseProblems) ? (
-					<CenteredDiv>{courseProblems}</CenteredDiv>
+				{!course.problems.length ? (
+					<CenteredDiv>There are no problems available for this course</CenteredDiv>
 				) : (
 					<Container>
-						{courseProblems.map((courseProblem) => (
-							<Problem key={courseProblem.id} id={courseProblem.id} {...courseProblem} />
+						{course.problems.map((courseProblem) => (
+							<Problem
+								courseId={course.id}
+								key={courseProblem.id}
+								id={courseProblem.id}
+								{...courseProblem}
+								currentUserId={currentUser.id}
+								isCurrentUserSubscribed={isCurrentUserSubscribed}
+							/>
 						))}
 					</Container>
 				)}
@@ -122,11 +131,17 @@ class Course extends React.Component {
 	}
 }
 
-const mapStateToProps = (state) => ({
-	courses: getAllCourses(state),
-	currentUser: getCurrentUserDetails(state),
-	users: getUsers(state)
-});
+const mapStateToProps = (state, ownProps) => {
+	const currentUser = getCurrentUserDetails(state);
+
+	return {
+		course: getCourseById(ownProps.match.params.id)(state),
+		currentUser,
+		subscribedUsers: getSubscribedUsersForCourse(ownProps.match.params.id)(state),
+		isCurrentUserSubscribed:
+			currentUser && isCurrentUserSubscribedToCourse(currentUser.id, ownProps.match.params.id)(state)
+	};
+};
 
 const mapDispatchToProps = {
 	subscribeToCourse,

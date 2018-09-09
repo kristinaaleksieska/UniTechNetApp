@@ -19,7 +19,7 @@ export const mapFirebaseExperiencesToArray = (firebaseExperiences) =>
 export const mapFirebaseProblemsToArray = (firebaseProblems) =>
 	Object.keys(firebaseProblems).map((problemId) => ({
 		id: problemId,
-		author: firebaseProblems[problemId].author,
+		authorId: firebaseProblems[problemId].authorId,
 		description: firebaseProblems[problemId].description,
 		name: firebaseProblems[problemId].name
 	}));
@@ -40,6 +40,4 @@ export const mapFirebaseUsersToArray = (firebaseUsers) =>
 	}));
 
 export const mapSubscribedUsersToArray = (subscribedUsers) =>
-	subscribedUsers
-		? Object.keys(subscribedUsers).map((subscribedUid) => subscribedUid)
-		: 'There are no subscribed users to this course';
+	subscribedUsers ? Object.keys(subscribedUsers) : 'There are no subscribed users to this course';

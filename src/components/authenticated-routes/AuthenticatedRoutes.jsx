@@ -11,6 +11,8 @@ import ProfilePage from '../profile-page/ProfilePage';
 import Course from '../courses-page/Course';
 import CourseList from '../courses-page/CoursesList';
 import ProblemDetails from '../courses-page/problems/ProblemDetails';
+import UserPage from '../profile-page/UserPage';
+import Feed from '../feed/Feed';
 
 class AuthenticatedRoutes extends React.Component {
 	state = {
@@ -23,16 +25,20 @@ class AuthenticatedRoutes extends React.Component {
 		});
 	};
 
-	goToCourses = () => {
-		history.push('/courses');
-	};
+	goTo = (url) => () => history.push(url);
 
 	render() {
 		return (
 			<React.Fragment>
-				<Header title="Profile" onMenuButtonClick={this.toggleDrawerOpen} />
+				<Header onMenuButtonClick={this.toggleDrawerOpen} />
 				<Drawer open={this.state.drawerOpen} onClose={this.toggleDrawerOpen(false)}>
-					<Button onClick={this.goToCourses} color="primary" variant="flat">
+					<Button onClick={this.goTo('/feed')} color="primary" variant="flat">
+						Feed
+					</Button>
+					<Button onClick={this.goTo('/profilepage')} color="primary" variant="flat">
+						ProfilePage
+					</Button>
+					<Button onClick={this.goTo('/courses')} color="primary" variant="flat">
 						Courses
 					</Button>
 				</Drawer>
@@ -40,7 +46,9 @@ class AuthenticatedRoutes extends React.Component {
 					<Route exact path="/profilepage" component={ProfilePage} />
 					<Route exact path="/courses/:id" component={Course} />
 					<Route exact path="/courses" component={CourseList} />
-					<Route exact path="/courses/:id/problems/:id" component={ProblemDetails} />
+					<Route path="/courses/:courseId/problems/:id" component={ProblemDetails} />
+					<Route path="/users/:userId" component={UserPage} />
+					<Route exact path="/feed" component={Feed} />
 				</Switch>
 			</React.Fragment>
 		);
