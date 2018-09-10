@@ -1,5 +1,5 @@
 import React from 'react';
-import { editAnswer, deleteAnswer } from '../../../actions/problems/answers/answers';
+import { editAnswer, deleteAnswer, markAnswerAsCorrect } from '../../../actions/problems/answers/answers';
 import { getUserDetailsById } from '../../../selectors/firebaseSelectors';
 import Card from '@material-ui/core/Card';
 import CardHeader from '@material-ui/core/CardHeader';
@@ -12,7 +12,8 @@ import Edit from '@material-ui/icons/Edit';
 import Delete from '@material-ui/icons/Delete';
 import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
+import { ifProp } from 'styled-tools';
 
 const EditIcon = <Edit />;
 
@@ -23,6 +24,11 @@ const CardContainer = styled.div`
 	justify-content: center;
 	padding-top: 30px;
 	margin: 0 auto;
+`;
+
+const AnswerContainer = styled.div`width: 90%;`;
+const CardComponent = styled(Card)`
+	${ifProp('isMarkedAsAnswer', css`border: 2px solid green;`)};
 `;
 
 class Answer extends React.Component {
@@ -45,21 +51,33 @@ class Answer extends React.Component {
 		this.props.deleteAnswer(courseId, problemId, answer.id);
 	};
 
+	markAsCorrect = () => {
+		const { courseId, problemId, answer } = this.props;
+		this.props.markAnswerAsCorrect(courseId, problemId, answer.id);
+	};
+
 	render() {
-		const { currentUserLoggedIn, courseId, problemId, answer, authorDetails } = this.props;
+		const { currentUserLoggedIn, courseId, problemId, answer, authorDetails, isMarkedAsAnswer } = this.props;
 		const { editable } = this.state;
+
+		console.log(isMarkedAsAnswer);
 
 		if (!currentUserLoggedIn || !courseId || !problemId || !answer || !authorDetails) {
 			return null;
 		}
 
 		return (
-			<div>
+			<AnswerContainer>
 				{editable && (
 					<AnswerForm userLoggedIn={currentUserLoggedIn} answer={answer} handleAction={this.editAnswer} />
 				)}
 				<CardContainer>
-					<Card>
+					<CardComponent
+						isMarkedAsAnswer={isMarkedAsAnswer}
+						style={{
+							width: '100%'
+						}}
+					>
 						<CardHeader
 							title={`${authorDetails.name} ${authorDetails.surname}`}
 							avatar={<Avatar aria-label="Answer">{authorDetails.name[0]}</Avatar>}
@@ -74,21 +92,25 @@ class Answer extends React.Component {
 								>
 									{EditIcon}
 								</Button>
-								<Button variant="raised" color="primary" onClick={this.deleteAnswer}>
+								<Button variant="flat" color="primary" onClick={this.deleteAnswer}>
 									{DeleteIcon}
+								</Button>
+								<Button variant="flat" color="primary" onClick={this.markAsCorrect}>
+									Mark as answer
 								</Button>
 							</CardActions>
 						)}
-					</Card>
+					</CardComponent>
 				</CardContainer>
-			</div>
+			</AnswerContainer>
 		);
 	}
 }
 
 const mapDispatchToProps = {
 	deleteAnswer,
-	editAnswer
+	editAnswer,
+	markAnswerAsCorrect
 };
 const mapStateToProps = (state, ownProps) => {
 	return {

@@ -28,6 +28,12 @@ const ProblemContainer = styled.div`
 	margin: 0 auto;
 `;
 
+const AnswerContainer = styled.div`
+	display: flex;
+	align-items: center;
+	flex-direction: column;
+`;
+
 const CardActionsContainer = styled.div`
 	display: flex;
 	justify-content: flex-end;
@@ -75,6 +81,14 @@ class ProblemDetails extends React.Component {
 					<CardContent>{problem.description}</CardContent>
 					<CardActionsContainer>
 						<CardActions>
+							<Button
+								variant="flat"
+								color="primary"
+								onClick={() => this.setState({ shouldAddAnswer: true })}
+							>
+								{' '}
+								Add Answer
+							</Button>
 							{problem.authorId === currentUserDetails.id && (
 								<div>
 									<Button
@@ -89,14 +103,6 @@ class ProblemDetails extends React.Component {
 									</Button>
 								</div>
 							)}
-							<Button
-								variant="flat"
-								color="primary"
-								onClick={() => this.setState({ shouldAddAnswer: true })}
-							>
-								{' '}
-								Add Answer
-							</Button>
 						</CardActions>
 					</CardActionsContainer>
 				</Card>
@@ -105,7 +111,7 @@ class ProblemDetails extends React.Component {
 						<AnswerForm userLoggedIn={currentUserDetails} handleAction={this.addAnswer} />
 					)}
 				</div>
-				<div>
+				<AnswerContainer>
 					{courseAnswers.map((courseAnswer) => (
 						<Answer
 							answer={courseAnswer}
@@ -113,9 +119,10 @@ class ProblemDetails extends React.Component {
 							problemId={problem.id}
 							courseId={courseId}
 							key={courseAnswer.id}
+							isMarkedAsAnswer={problem.answerId === courseAnswer.id}
 						/>
 					))}
-				</div>
+				</AnswerContainer>
 			</ProblemContainer>
 		);
 	}

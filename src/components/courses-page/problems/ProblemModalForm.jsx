@@ -46,7 +46,8 @@ class SimpleModal extends React.Component {
 			authorId: userId,
 			date: moment.utc().format(),
 			description: '',
-			name: ''
+			name: '',
+			answerId: false
 		};
 	}
 
@@ -76,7 +77,8 @@ class SimpleModal extends React.Component {
 			description: '',
 			name: '',
 			authorId: '',
-			author: ''
+			author: '',
+			answerId: false
 		});
 
 		this.props.handleClose();

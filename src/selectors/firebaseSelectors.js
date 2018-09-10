@@ -65,7 +65,8 @@ export const getCourseById = (courseId) => (state) => {
 				description: course.problems[problemId].description,
 				name: course.problems[problemId].name,
 				date: course.problems[problemId].date,
-				answers: course.problems[problemId].answers
+				answers: course.problems[problemId].answers,
+				answerId: course.problems[problemId].answerId
 			}))
 		: [];
 
