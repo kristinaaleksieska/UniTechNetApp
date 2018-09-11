@@ -1,8 +1,16 @@
 import database from '../../firebase/firebase';
+import { addConnection } from '../profile-page/connectionActions';
 const databaseCourse = async (courseid) => await database.ref(`courses/${courseid}`).once('value');
 
-export const subscribeToCourse = (uid, courseid) => async () => {
+export const subscribeToCourse = (uid, courseid, subscribedUserIds) => async () => {
 	const course = (await databaseCourse(courseid)).val();
+
+	await Promise.all(
+		subscribedUserIds.map((subscribedUserId) => {
+			console.log('se cheka');
+			return addConnection(uid, subscribedUserId);
+		})
+	);
 	return database.ref(`courses/${courseid}/subscribedUsers/${uid}`).set(true).then(() =>
 		database.ref(`users/${uid}/courses/${courseid}`).set({
 			courseId: courseid,

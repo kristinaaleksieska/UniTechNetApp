@@ -4,6 +4,7 @@ import 'firebase/auth';
 import { connect } from 'react-redux';
 import { startUpdateGeneralInfo } from '../../../../actions/profile-page/generalInfoActions';
 import { addConnection } from '../../../../actions/profile-page/connectionActions';
+import { uploadPhotoOnFirebase } from '../../../../actions/profile-page/profilePicture';
 import { userLoggedIn } from '../../../../selectors/firebaseSelectors';
 import EditableUserDetails from './EditableUserDetails';
 import UserDetails from './UserDetails';
@@ -42,6 +43,7 @@ class UserInfo extends React.Component {
 		editable: false,
 		isConnected: false,
 		isCurrentUser: false,
+		photoUrl: '',
 		user: {}
 	};
 
@@ -120,10 +122,22 @@ class UserInfo extends React.Component {
 		);
 	};
 
+	changePhoto = (event) => {
+		this.setState({
+			photoUrl: event.target.files[0]
+		});
+	};
+
+	onPhotoUpload = () => {
+		const { id } = this.props.user;
+		const { photoUrl } = this.state;
+		this.props.uploadPhotoOnFirebase(id, photoUrl);
+	};
+
 	render() {
 		const { user } = this.props;
 		const { editable, user: userFromState } = this.state;
-		// FIXME: Temporary fix, make progress dialog bigger and global
+
 		if (!user) {
 			return <Loading />;
 		}
@@ -131,7 +145,9 @@ class UserInfo extends React.Component {
 		return (
 			<BackgroundContainer>
 				<ContentContainer>
-					<ProfilePicture src={DefaultProfilePicture} />
+					<ProfilePicture src={user.profilePictureUrl} />
+					<input type="file" onChange={this.changePhoto} />
+					<Button onClick={this.onPhotoUpload}>Do it</Button>
 					<UserDetailsContainer>
 						{editable ? (
 							<EditableUserDetails onValueChange={this.onValueChange} user={userFromState} />
@@ -148,7 +164,8 @@ class UserInfo extends React.Component {
 
 const mapDispatchToProps = {
 	startUpdateGeneralInfo,
-	addConnection
+	addConnection,
+	uploadPhotoOnFirebase
 };
 
 const mapStateToProps = (state) => ({

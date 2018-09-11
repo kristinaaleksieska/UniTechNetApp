@@ -62,7 +62,10 @@ class Course extends React.Component {
 		this.props.unsubscribeFromCourse(this.props.currentUser.id, this.props.match.params.id);
 	};
 	subscribeToCourse = () => {
-		this.props.subscribeToCourse(this.props.currentUser.id, this.props.match.params.id);
+		const { subscribedUsers } = this.props;
+		const subscribedUserIds = subscribedUsers.map((subscribedUser) => subscribedUser.id);
+
+		this.props.subscribeToCourse(this.props.currentUser.id, this.props.match.params.id, subscribedUserIds);
 	};
 
 	render() {

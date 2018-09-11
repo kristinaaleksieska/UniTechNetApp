@@ -47,13 +47,34 @@ class Answer extends React.Component {
 	};
 
 	deleteAnswer = () => {
-		const { courseId, problemId, answer } = this.props;
+		const { courseId, problemId, answer, isMarkedAsAnswer } = this.props;
 		this.props.deleteAnswer(courseId, problemId, answer.id);
+		if (isMarkedAsAnswer) {
+			this.props.markAnswerAsCorrect(courseId, problemId, false);
+		}
 	};
 
 	markAsCorrect = () => {
 		const { courseId, problemId, answer } = this.props;
 		this.props.markAnswerAsCorrect(courseId, problemId, answer.id);
+	};
+
+	unmarkAnswer = () => {
+		const { courseId, problemId } = this.props;
+		this.props.markAnswerAsCorrect(courseId, problemId, false);
+	};
+
+	generateAnswerActionButton = () => {
+		const { isMarkedAsAnswer } = this.props;
+
+		const buttonText = isMarkedAsAnswer ? 'Unmark answer' : 'Mark as answer';
+		const buttonAction = isMarkedAsAnswer ? this.unmarkAnswer : this.markAsCorrect;
+
+		return (
+			<Button variant="flat" color="primary" onClick={buttonAction}>
+				{buttonText}
+			</Button>
+		);
 	};
 
 	render() {
@@ -95,9 +116,7 @@ class Answer extends React.Component {
 								<Button variant="flat" color="primary" onClick={this.deleteAnswer}>
 									{DeleteIcon}
 								</Button>
-								<Button variant="flat" color="primary" onClick={this.markAsCorrect}>
-									Mark as answer
-								</Button>
+								{this.generateAnswerActionButton()}
 							</CardActions>
 						)}
 					</CardComponent>

@@ -48,13 +48,15 @@ const SimpleModal = (props) => {
 								title = `${title} (me)`;
 							}
 
+							const avatar = user.profilePictureUrl ? (
+								<Avatar aria-label="Profile Picture" src={user.profilePictureUrl} alt={user.name[0]} />
+							) : (
+								<Avatar aria-label="Profile Picture">{user.name[0]}</Avatar>
+							);
+
 							return (
 								<Link to={`/users/${user.id}`} style={{ textDecoration: 'none' }}>
-									<CardHeader
-										key={user.id}
-										title={title}
-										avatar={<Avatar aria-label="Profile Picture">{user.name[0]}</Avatar>}
-									/>
+									<CardHeader key={user.id} title={title} avatar={avatar} />
 								</Link>
 							);
 						})}
