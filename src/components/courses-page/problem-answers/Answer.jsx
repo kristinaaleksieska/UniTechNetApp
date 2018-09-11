@@ -41,7 +41,6 @@ class Answer extends React.Component {
 
 	editAnswer = (answer) => {
 		const { courseId, problemId } = this.props;
-		console.log('edit', answer);
 		this.props.editAnswer(courseId, problemId, answer);
 		this.setState({ editable: false });
 	};
@@ -81,12 +80,18 @@ class Answer extends React.Component {
 		const { currentUserLoggedIn, courseId, problemId, answer, authorDetails, isMarkedAsAnswer } = this.props;
 		const { editable } = this.state;
 
-		console.log(isMarkedAsAnswer);
-
 		if (!currentUserLoggedIn || !courseId || !problemId || !answer || !authorDetails) {
 			return null;
 		}
-
+		const avatar = authorDetails.profilePictureUrl ? (
+			<Avatar
+				aria-label="Profile Picture"
+				src={authorDetails.profilePictureUrl}
+				alt={authorDetails.lastName[0]}
+			/>
+		) : (
+			<Avatar aria-label="Profile Picture">{authorDetails.lastName[0]}</Avatar>
+		);
 		return (
 			<AnswerContainer>
 				{editable && (
@@ -99,10 +104,7 @@ class Answer extends React.Component {
 							width: '100%'
 						}}
 					>
-						<CardHeader
-							title={`${authorDetails.name} ${authorDetails.surname}`}
-							avatar={<Avatar aria-label="Answer">{authorDetails.name[0]}</Avatar>}
-						/>
+						<CardHeader title={`${authorDetails.firstName} ${authorDetails.lastName}`} avatar={avatar} />
 						<CardContent>{answer.description}</CardContent>
 						{answer.author === currentUserLoggedIn.id && (
 							<CardActions>

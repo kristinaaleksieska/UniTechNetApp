@@ -19,7 +19,7 @@ export const mapFirebaseExperiencesToArray = (firebaseExperiences) =>
 export const mapFirebaseProblemsToArray = (firebaseProblems) =>
 	Object.keys(firebaseProblems).map((problemId) => ({
 		id: problemId,
-		authorId: firebaseProblems[problemId].authorId,
+		authorId: Object.keys(firebaseProblems[problemId].author)[0],
 		description: firebaseProblems[problemId].description,
 		name: firebaseProblems[problemId].name
 	}));
@@ -27,8 +27,8 @@ export const mapFirebaseProblemsToArray = (firebaseProblems) =>
 export const mapFirebaseUsersToArray = (firebaseUsers) =>
 	Object.keys(firebaseUsers).map((firebaseUid) => ({
 		id: firebaseUid,
-		name: firebaseUsers[firebaseUid].name,
-		surname: firebaseUsers[firebaseUid].surname,
+		firstName: firebaseUsers[firebaseUid].firstName,
+		lastName: firebaseUsers[firebaseUid].lastName,
 		birthday: firebaseUsers[firebaseUid].birthday,
 		gender: firebaseUsers[firebaseUid].gender,
 		experiences: mapFirebaseExperiencesToArray(firebaseUsers[firebaseUid].experiences),

@@ -61,7 +61,7 @@ export const getCourseById = (courseId) => (state) => {
 	const courseProblems = course.problems
 		? Object.keys(course.problems).map((problemId) => ({
 				id: problemId,
-				authorId: course.problems[problemId].authorId,
+				authorId: mapAuthor(course.problems[problemId].author),
 				description: course.problems[problemId].description,
 				name: course.problems[problemId].name,
 				date: course.problems[problemId].date,

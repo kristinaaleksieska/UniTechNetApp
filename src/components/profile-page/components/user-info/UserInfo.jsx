@@ -79,12 +79,12 @@ class UserInfo extends React.Component {
 	};
 
 	updateDetails = () => {
-		const { id, name, surname, gender, title, username, phoneNumber, birthday } = this.state.user;
+		const { id, firstName, lastName, gender, title, username, phoneNumber, birthday } = this.state.user;
 
 		this.props.startUpdateGeneralInfo({
 			id: firebase.auth().currentUser.uid,
-			name,
-			surname,
+			firstName,
+			lastName,
 			gender,
 			title,
 			username,

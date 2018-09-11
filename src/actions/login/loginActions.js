@@ -7,8 +7,8 @@ const setInitialUserInfos = (uid) => (dispatch) => {
 
 		if (!hasChildWithUid) {
 			database.ref('users/' + uid).set({
-				name: '',
-				surname: '',
+				firstName: '',
+				lastName: '',
 				birthday: '1990-01-01',
 				gender: '',
 				title: '',

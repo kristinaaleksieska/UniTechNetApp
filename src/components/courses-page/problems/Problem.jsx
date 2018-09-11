@@ -51,7 +51,7 @@ const Problem = (props) => {
 				<ColumnContainer>
 					<ElementContainer>
 						<i>
-							Posted by: {props.createdBy.name} {props.createdBy.surname}
+							Posted by: {props.createdBy.firstName} {props.createdBy.lastName}
 						</i>
 					</ElementContainer>
 					<ElementContainer>{props.withCourseName && <i>In: {props.courseName}</i>}</ElementContainer>

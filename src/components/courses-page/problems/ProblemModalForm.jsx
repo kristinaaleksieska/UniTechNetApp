@@ -3,6 +3,7 @@ import moment from 'moment';
 import { connect } from 'react-redux';
 import { withStyles } from '@material-ui/core/styles';
 import { addProblem, editProblem } from '../../../actions/problems/problems';
+import { getUserDetailsById } from '../../../selectors/firebaseSelectors';
 import Typography from '@material-ui/core/Typography';
 import Modal from '@material-ui/core/Modal';
 import TextField from '@material-ui/core/TextField';
@@ -41,13 +42,19 @@ const styles = (theme) => ({
 class SimpleModal extends React.Component {
 	constructor(props) {
 		super(props);
-		const { userId } = props;
+		const { userDetails } = props;
+
 		this.state = {
-			authorId: userId,
 			date: moment.utc().format(),
 			description: '',
 			name: '',
-			answerId: false
+			answerId: false,
+			author: {
+				[userDetails.id]: {
+					firstName: userDetails.firstName,
+					lastName: userDetails.lastName
+				}
+			}
 		};
 	}
 
@@ -76,7 +83,6 @@ class SimpleModal extends React.Component {
 			date: '',
 			description: '',
 			name: '',
-			authorId: '',
 			author: '',
 			answerId: false
 		});
@@ -135,6 +141,10 @@ class SimpleModal extends React.Component {
 	}
 }
 
+const mapStateToProps = (state, ownProps) => ({
+	userDetails: getUserDetailsById(ownProps.userId)(state)
+});
+
 const mapDispatchToProps = { addProblem, editProblem };
 
-export default connect(null, mapDispatchToProps)(withStyles(styles)(SimpleModal));
+export default connect(mapStateToProps, mapDispatchToProps)(withStyles(styles)(SimpleModal));

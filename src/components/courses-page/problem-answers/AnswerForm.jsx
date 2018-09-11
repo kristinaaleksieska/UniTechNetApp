@@ -19,11 +19,10 @@ class AnswerForm extends React.Component {
 	constructor(props) {
 		super(props);
 		const { userLoggedIn, answer } = props;
-		console.log('answer', answer);
 		if (!answer) {
 			this.state = {
 				description: '',
-				author: { [userLoggedIn.id]: { firstName: userLoggedIn.name, lastName: userLoggedIn.surname } },
+				author: { [userLoggedIn.id]: { firstName: userLoggedIn.firstName, lastName: userLoggedIn.lastName } },
 				date: moment.utc().format()
 			};
 		} else {
@@ -34,13 +33,6 @@ class AnswerForm extends React.Component {
 			};
 		}
 	}
-
-	// componentWillReceiveProps(nextProps) {
-	// 	if (nextProps.answer) {
-	// 		this.setState({ ...nextProps.answer });
-	// 	}
-	// 	console.log('state is:', this.state);
-	// }
 
 	onValueChange = (e) => {
 		this.setState({

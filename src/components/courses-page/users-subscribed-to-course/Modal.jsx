@@ -42,16 +42,20 @@ const SimpleModal = (props) => {
 					</Typography>
 					<Typography variant="subheading" id="simple-modal-description">
 						{users.map((user) => {
-							let title = `${user.name} ${user.surname}`;
+							let title = `${user.firstName} ${user.lastName}`;
 
 							if (props.currentUserId === user.id) {
 								title = `${title} (me)`;
 							}
 
 							const avatar = user.profilePictureUrl ? (
-								<Avatar aria-label="Profile Picture" src={user.profilePictureUrl} alt={user.name[0]} />
+								<Avatar
+									aria-label="Profile Picture"
+									src={user.profilePictureUrl}
+									alt={user.firstName[0]}
+								/>
 							) : (
-								<Avatar aria-label="Profile Picture">{user.name[0]}</Avatar>
+								<Avatar aria-label="Profile Picture">{user.firstName[0]}</Avatar>
 							);
 
 							return (
