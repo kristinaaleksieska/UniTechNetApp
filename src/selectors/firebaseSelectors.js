@@ -197,3 +197,43 @@ export const getAuthorIdOfAComment = (courseId, problemId, answerId) => (state) 
 
 	return answer.author.id;
 };
+
+export const getConnectionsForUser = (state) => {
+	const uid = userLoggedIn(state);
+	const user = getUserDetailsById(uid)(state);
+
+	if (!user) {
+		return [];
+	}
+
+	const { connections } = user;
+	if (!connections) {
+		return [];
+	}
+
+	return Object.keys(connections).map((connectionId) => getUserDetailsById(connectionId)(state));
+};
+
+export const getMessagesFromChat = (connectionUserId) => (state) => {
+	const currentUserId = userLoggedIn(state);
+
+	const currentUserDetails = getUserDetailsById(currentUserId)(state);
+
+	if (!currentUserDetails) {
+		return [];
+	}
+
+	const { chat } = currentUserDetails;
+	if (!chat || !chat[connectionUserId]) {
+		return [];
+	}
+
+	const { messages } = chat[connectionUserId];
+	if (!messages) {
+		return [];
+	}
+
+	const messageArray = Object.keys(messages).map((messageId) => ({ ...messages[messageId], id: messageId }));
+
+	return _orderBy(messageArray, [ (message) => moment.utc(message.sentDate).valueOf() ], [ 'asc' ]);
+};

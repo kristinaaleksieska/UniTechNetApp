@@ -40,7 +40,7 @@ class Answer extends React.Component {
 	}
 
 	editAnswer = (answer) => {
-		const { courseId, problemId } = this.props;
+		const { courseId, problemId, answerId } = this.props;
 		this.props.editAnswer(courseId, problemId, answer);
 		this.setState({ editable: false });
 	};
@@ -77,7 +77,15 @@ class Answer extends React.Component {
 	};
 
 	render() {
-		const { currentUserLoggedIn, courseId, problemId, answer, authorDetails, isMarkedAsAnswer } = this.props;
+		const {
+			currentUserLoggedIn,
+			courseId,
+			problemId,
+			answer,
+			answerId,
+			authorDetails,
+			isMarkedAsAnswer
+		} = this.props;
 		const { editable } = this.state;
 
 		if (!currentUserLoggedIn || !courseId || !problemId || !answer || !authorDetails) {
@@ -87,15 +95,20 @@ class Answer extends React.Component {
 			<Avatar
 				aria-label="Profile Picture"
 				src={authorDetails.profilePictureUrl}
-				alt={authorDetails.lastName[0]}
+				alt={authorDetails.firstName[0]}
 			/>
 		) : (
-			<Avatar aria-label="Profile Picture">{authorDetails.lastName[0]}</Avatar>
+			<Avatar aria-label="Profile Picture">{authorDetails.firstName[0]}</Avatar>
 		);
 		return (
 			<AnswerContainer>
 				{editable && (
-					<AnswerForm userLoggedIn={currentUserLoggedIn} answer={answer} handleAction={this.editAnswer} />
+					<AnswerForm
+						userLoggedIn={currentUserLoggedIn}
+						answer={answer}
+						authorDetails={authorDetails}
+						handleAction={this.editAnswer}
+					/>
 				)}
 				<CardContainer>
 					<CardComponent
@@ -106,21 +119,23 @@ class Answer extends React.Component {
 					>
 						<CardHeader title={`${authorDetails.firstName} ${authorDetails.lastName}`} avatar={avatar} />
 						<CardContent>{answer.description}</CardContent>
-						{answer.author === currentUserLoggedIn.id && (
-							<CardActions>
-								<Button
-									variant="flat"
-									color="primary"
-									onClick={() => this.setState({ editable: true })}
-								>
-									{EditIcon}
-								</Button>
-								<Button variant="flat" color="primary" onClick={this.deleteAnswer}>
-									{DeleteIcon}
-								</Button>
-								{this.generateAnswerActionButton()}
-							</CardActions>
-						)}
+						<CardActions>
+							{answer.author === currentUserLoggedIn.id && (
+								<React.Fragment>
+									<Button
+										variant="flat"
+										color="primary"
+										onClick={() => this.setState({ editable: true })}
+									>
+										{EditIcon}
+									</Button>
+									<Button variant="flat" color="primary" onClick={this.deleteAnswer}>
+										{DeleteIcon}
+									</Button>
+								</React.Fragment>
+							)}
+							{answer.author !== currentUserLoggedIn.id && this.generateAnswerActionButton()}
+						</CardActions>
 					</CardComponent>
 				</CardContainer>
 			</AnswerContainer>

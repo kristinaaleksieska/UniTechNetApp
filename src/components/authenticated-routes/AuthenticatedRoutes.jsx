@@ -13,6 +13,7 @@ import CourseList from '../courses-page/CoursesList';
 import ProblemDetails from '../courses-page/problems/ProblemDetails';
 import UserPage from '../profile-page/UserPage';
 import Feed from '../feed/Feed';
+import Messenger from '../messenger/Messenger';
 
 class AuthenticatedRoutes extends React.Component {
 	state = {
@@ -41,6 +42,9 @@ class AuthenticatedRoutes extends React.Component {
 					<Button onClick={this.goTo('/courses')} color="primary" variant="flat">
 						Courses
 					</Button>
+					<Button onClick={this.goTo('/messenger')} color="primary" variant="flat">
+						Messenger
+					</Button>
 				</Drawer>
 				<Switch>
 					<Route exact path="/profilepage" component={ProfilePage} />
@@ -49,6 +53,7 @@ class AuthenticatedRoutes extends React.Component {
 					<Route path="/courses/:courseId/problems/:id" component={ProblemDetails} />
 					<Route path="/users/:userId" component={UserPage} />
 					<Route exact path="/feed" component={Feed} />
+					<Route exact path="/messenger" component={Messenger} />
 				</Switch>
 			</React.Fragment>
 		);

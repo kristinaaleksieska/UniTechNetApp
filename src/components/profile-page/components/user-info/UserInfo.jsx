@@ -10,6 +10,7 @@ import EditableUserDetails from './EditableUserDetails';
 import UserDetails from './UserDetails';
 import Loading from '../../../common/Loading';
 import styled from 'styled-components';
+import { ifProp } from 'styled-tools';
 import Button from '@material-ui/core/Button';
 import AccountCircle from '@material-ui/icons/AccountCircle';
 import EditIcon from '@material-ui/icons/Edit';
@@ -26,9 +27,19 @@ const ContentContainer = styled.div`
 	flex-direction: column;
 `;
 
+const HiddenContent = styled.div`display: none;`;
+
 const ProfilePicture = styled.img`
 	border-radius: 50%;
 	width: 20%;
+
+	cursor: pointer;
+
+	opacity: ${ifProp('isPhotoUploading', '0.5', '1')};
+
+	&:hover {
+		opacity: 0.5;
+	}
 `;
 
 const UserDetailsContainer = styled.div`text-align: center;`;
@@ -45,6 +56,16 @@ class UserInfo extends React.Component {
 		isCurrentUser: false,
 		photoUrl: '',
 		user: {}
+	};
+
+	constructor(props) {
+		super(props);
+
+		this.profileInputRef = React.createRef();
+	}
+
+	onProfilePictureClick = () => {
+		this.profileInputRef.current.click();
 	};
 
 	static getDerivedStateFromProps(nextProps, prevState) {
@@ -74,7 +95,8 @@ class UserInfo extends React.Component {
 
 	editDetails = () => {
 		this.setState({
-			editable: true
+			editable: true,
+			isPhotoUploading: false
 		});
 	};
 
@@ -123,20 +145,27 @@ class UserInfo extends React.Component {
 	};
 
 	changePhoto = (event) => {
-		this.setState({
-			photoUrl: event.target.files[0]
-		});
-	};
-
-	onPhotoUpload = () => {
 		const { id } = this.props.user;
-		const { photoUrl } = this.state;
-		this.props.uploadPhotoOnFirebase(id, photoUrl);
+		const [ photo ] = event.target.files;
+		if (photo) {
+			this.setState(
+				{
+					isPhotoUploading: true
+				},
+				() => {
+					this.props.uploadPhotoOnFirebase(id, photo).then(() => {
+						this.setState({
+							isPhotoUploading: false
+						});
+					});
+				}
+			);
+		}
 	};
 
 	render() {
 		const { user } = this.props;
-		const { editable, user: userFromState } = this.state;
+		const { editable, user: userFromState, isPhotoUploading } = this.state;
 
 		if (!user) {
 			return <Loading />;
@@ -145,9 +174,14 @@ class UserInfo extends React.Component {
 		return (
 			<BackgroundContainer>
 				<ContentContainer>
-					<ProfilePicture src={user.profilePictureUrl} />
-					<input type="file" onChange={this.changePhoto} />
-					<Button onClick={this.onPhotoUpload}>Do it</Button>
+					<ProfilePicture
+						isPhotoUploading={isPhotoUploading}
+						onClick={this.onProfilePictureClick}
+						src={user.profilePictureUrl}
+					/>
+					<HiddenContent>
+						<input ref={this.profileInputRef} type="file" onChange={this.changePhoto} />
+					</HiddenContent>
 					<UserDetailsContainer>
 						{editable ? (
 							<EditableUserDetails onValueChange={this.onValueChange} user={userFromState} />

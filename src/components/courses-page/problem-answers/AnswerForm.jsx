@@ -18,7 +18,8 @@ const AnswerFormContainer = styled.div`
 class AnswerForm extends React.Component {
 	constructor(props) {
 		super(props);
-		const { userLoggedIn, answer } = props;
+		const { userLoggedIn, answer, authorDetails } = props;
+
 		if (!answer) {
 			this.state = {
 				description: '',
@@ -29,7 +30,13 @@ class AnswerForm extends React.Component {
 			this.state = {
 				description: answer.description,
 				date: answer.date,
-				author: answer.author
+				author: {
+					[answer.author]: {
+						firstName: authorDetails.firstName,
+						lastName: authorDetails.lastName
+					}
+				},
+				id: answer.id
 			};
 		}
 	}

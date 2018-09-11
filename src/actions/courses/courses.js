@@ -7,7 +7,6 @@ export const subscribeToCourse = (uid, courseid, subscribedUserIds) => async () 
 
 	await Promise.all(
 		subscribedUserIds.map((subscribedUserId) => {
-			console.log('se cheka');
 			return addConnection(uid, subscribedUserId);
 		})
 	);
