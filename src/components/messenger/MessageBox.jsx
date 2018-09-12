@@ -56,14 +56,14 @@ class MessageBox extends React.Component {
 	};
 
 	render() {
-		const { messages, currentUserId } = this.props;
+		const { messages, currentUserId, selectedChatId } = this.props;
 		return (
 			<MessageBoxContainer>
 				<MessagesContainer>
 					{messages.map((message) => <SingleMessage message={message} currentUserId={currentUserId} />)}
 					<div style={{ float: 'left', clear: 'both' }} ref={this.emptyDivRef} />
 				</MessagesContainer>
-				<MessageInput handleSend={this.handleSend} />
+				{selectedChatId && <MessageInput handleSend={this.handleSend} />}
 			</MessageBoxContainer>
 		);
 	}
