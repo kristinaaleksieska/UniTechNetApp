@@ -75,19 +75,20 @@ class SimpleModal extends React.Component {
 		const handleAction = this.props.editMode ? this.props.editProblem : this.props.addProblem;
 		const problem = { ...this.state };
 		handleAction(this.props.courseId, problem);
-		this.onModalClose();
+		if (!this.props.editMode) {
+			this.onModalClose();
+		}
+
+		this.props.handleClose();
 	};
 
 	onModalClose = () => {
 		this.setState({
-			date: '',
 			description: '',
 			name: '',
-			author: '',
+			date: moment.utc().format(),
 			answerId: false
 		});
-
-		this.props.handleClose();
 	};
 
 	render() {
