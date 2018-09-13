@@ -20,7 +20,8 @@ const Titles = {
 	'/profilepage': 'Profile',
 	'/courses/': 'Course',
 	'/courses': 'Courses',
-	'/feed': 'Feed'
+	'/feed': 'Feed',
+	'/messenger': 'Messenger'
 };
 
 const getTitleFromPathname = (pathname) => {
