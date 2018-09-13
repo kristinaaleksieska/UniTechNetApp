@@ -93,6 +93,15 @@ class UserInfo extends React.Component {
 		});
 	};
 
+	onGenderChange = (selectedOption) => {
+		this.setState({
+			user: {
+				...this.state.user,
+				gender: selectedOption
+			}
+		});
+	};
+
 	editDetails = () => {
 		this.setState({
 			editable: true,
@@ -184,7 +193,11 @@ class UserInfo extends React.Component {
 					</HiddenContent>
 					<UserDetailsContainer>
 						{editable ? (
-							<EditableUserDetails onValueChange={this.onValueChange} user={userFromState} />
+							<EditableUserDetails
+								onGenderChange={this.onGenderChange}
+								onValueChange={this.onValueChange}
+								user={userFromState}
+							/>
 						) : (
 							<UserDetails user={userFromState} />
 						)}
