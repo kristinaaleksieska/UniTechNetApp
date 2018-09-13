@@ -14,6 +14,7 @@ import ProblemDetails from '../courses-page/problems/ProblemDetails';
 import UserPage from '../profile-page/UserPage';
 import Feed from '../feed/Feed';
 import Messenger from '../messenger/Messenger';
+import NotificationsPage from '../notifications-page/NotificationsPage';
 
 class AuthenticatedRoutes extends React.Component {
 	state = {
@@ -54,6 +55,8 @@ class AuthenticatedRoutes extends React.Component {
 					<Route path="/users/:userId" component={UserPage} />
 					<Route exact path="/feed" component={Feed} />
 					<Route exact path="/messenger" component={Messenger} />
+					<Route path="/messenger/:connectionId" component={Messenger} />
+					<Route exact path="/notifications" component={NotificationsPage} />
 				</Switch>
 			</React.Fragment>
 		);

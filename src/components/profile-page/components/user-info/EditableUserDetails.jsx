@@ -2,7 +2,8 @@ import React from 'react';
 import CustomDatePicker from '../../../common/CustomDatePicker';
 import styled from 'styled-components';
 import TextField from '@material-ui/core/TextField';
-import Select from 'react-select';
+import Select from '@material-ui/core/Select';
+import MenuItem from '@material-ui/core/MenuItem';
 
 const options = [
 	{
@@ -27,10 +28,18 @@ const SelectContainer = styled.div`
 	width: 100%;
 	margin-top: 13px;
 `;
+
+const StyledSelect = styled(Select)`
+	width: 95%;
+	padding-left: 4px;
+	text-align: left;
+`;
+
 const TextFieldContainer = styled.div`padding: 5px;`;
 
 const EditableUserDetails = (props) => (
 	<EditUserContainer>
+		{console.log(props.user)}
 		<TwoTextFieldsContainer>
 			<TextFieldContainer>
 				<TextField
@@ -55,12 +64,19 @@ const EditableUserDetails = (props) => (
 		</TwoTextFieldsContainer>
 		<TwoTextFieldsContainer>
 			<SelectContainer>
-				<Select
+				<StyledSelect
 					placeholder="Gender"
-					value={props.user.gender}
+					value={props.user.gender.value}
 					onChange={props.onGenderChange}
-					options={options}
-				/>
+					inputProps={{
+						name: 'gender',
+						id: 'gender',
+						width: '100%'
+					}}
+				>
+					<MenuItem value="male">Male</MenuItem>
+					<MenuItem value="female">Female</MenuItem>
+				</StyledSelect>
 			</SelectContainer>
 			<TextFieldContainer>
 				<TextField

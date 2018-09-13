@@ -18,19 +18,18 @@ class Messenger extends React.Component {
 		selectedChat: null
 	};
 
-	render() {
-		return null;
+	static getDerivedStateFromProps(nextProps, prevState) {
+		const { connectionId } = nextProps.match.params;
+		if (connectionId && prevState.selectedChat !== connectionId) {
+			nextProps.initializeChat(connectionId);
+		}
+		return {
+			selectedChat: connectionId
+		};
 	}
 
 	onConnectionClick = (connectionId) => {
-		this.setState(
-			{
-				selectedChat: connectionId
-			},
-			() => {
-				this.props.initializeChat(this.state.selectedChat);
-			}
-		);
+		this.props.history.push(`/messenger/${connectionId}`);
 	};
 
 	render() {

@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { compose } from 'redux';
 import { firebaseConnect } from 'react-redux-firebase';
 import ProblemModalForm from '../problems/ProblemModalForm';
-import { deleteProblem } from '../../../actions/problems/problems';
+import { deleteProblem, addProblem, editProblem } from '../../../actions/problems/problems';
 import { addAnswer } from '../../../actions/problems/answers/answers';
 import {
 	getProblemByCourseAndProblemIds,
@@ -56,6 +56,11 @@ class ProblemDetails extends React.Component {
 		this.setState({ shouldAddAnswer: false });
 	};
 
+	editProblem = (problem) => {
+		const { match: { params: { courseId } } } = this.props;
+		this.props.editProblem(courseId, problem);
+	};
+
 	render() {
 		const { problem, currentUserDetails, courseAnswers, match: { params: { courseId } } } = this.props;
 		if (!problem || !currentUserDetails || !courseAnswers) {
@@ -68,10 +73,11 @@ class ProblemDetails extends React.Component {
 						<ProblemModalForm
 							shouldBeOpen={this.state.isAddProblemModalOpen}
 							handleClose={() => this.setState({ isAddProblemModalOpen: false })}
-							title="Add a problem"
+							title="Edit problem"
 							userId={problem.authorId}
 							courseId={courseId}
 							problem={problem}
+							handleAction={this.editProblem}
 							editMode
 						/>
 					</div>
@@ -139,7 +145,8 @@ const mapStateToProps = (state, ownProps) => {
 
 const mapDispatchToProps = {
 	deleteProblem,
-	addAnswer
+	addAnswer,
+	editProblem
 };
 
 export default compose(firebaseConnect([ 'users', 'courses' ]), connect(mapStateToProps, mapDispatchToProps))(

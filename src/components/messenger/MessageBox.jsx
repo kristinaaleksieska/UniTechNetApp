@@ -52,7 +52,7 @@ class MessageBox extends React.Component {
 			sentDate: moment.utc().format(),
 			value: inputMessage
 		};
-		this.props.sendMessage(selectedChatId, currentUserId, message);
+		this.props.sendMessage(currentUserId, selectedChatId, message);
 	};
 
 	render() {

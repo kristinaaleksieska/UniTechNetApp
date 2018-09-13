@@ -1,4 +1,5 @@
 import React from 'react';
+import _startCase from 'lodash/startCase';
 import { firebase } from '../../../../firebase/firebase';
 import 'firebase/auth';
 import { connect } from 'react-redux';
@@ -93,11 +94,14 @@ class UserInfo extends React.Component {
 		});
 	};
 
-	onGenderChange = (selectedOption) => {
+	onGenderChange = (event) => {
 		this.setState({
 			user: {
 				...this.state.user,
-				gender: selectedOption
+				gender: {
+					value: event.target.value,
+					label: _startCase(event.target.value.toLowerCase())
+				}
 			}
 		});
 	};

@@ -1,5 +1,6 @@
 import _find from 'lodash/find';
 import _orderBy from 'lodash/orderBy';
+import _reverse from 'lodash/reverse';
 import moment from 'moment';
 
 const getFirebaseState = (state) => state.firebase;
@@ -237,3 +238,27 @@ export const getMessagesFromChat = (connectionUserId) => (state) => {
 
 	return _orderBy(messageArray, [ (message) => moment.utc(message.sentDate).valueOf() ], [ 'asc' ]);
 };
+
+export const getNotificationsForUserById = (id) => (state) => {
+	const user = getUserDetailsById(id)(state);
+
+	if (!user) {
+		return [];
+	}
+
+	const { notifications } = user;
+
+	if (!notifications) {
+		return [];
+	}
+
+	return _reverse(
+		Object.keys(notifications).map((notificationId) => ({
+			...notifications[notificationId],
+			id: notificationId
+		}))
+	);
+};
+
+export const getUnseenNotificationsById = (id) => (state) =>
+	getNotificationsForUserById(id)(state).filter((notification) => !notification.seen);

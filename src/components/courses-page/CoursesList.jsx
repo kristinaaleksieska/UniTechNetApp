@@ -17,10 +17,11 @@ const ThreeCardsContainer = styled.div`
 `;
 
 const SearchContainer = styled.div`
+	padding-right: 8px;
 	margin-top: 35px;
 	display: flex;
-	width: 40%;
-	margin: 0 auto;
+	align-items: flex-end;
+	justify-content: flex-end;
 `;
 
 class CourseList extends React.Component {
@@ -47,20 +48,18 @@ class CourseList extends React.Component {
 						value={this.state.searchField}
 						onChange={this.onInputChange}
 						autoFocus
-						fullWidth
-						placeholder="Search Field"
+						placeholder="Search courses"
 					/>
 				</SearchContainer>
 				<ThreeCardsContainer>
 					{courses.length === 0 ? (
 						<p>No courses</p>
 					) : (
-						courses.map(
-							(course) =>
-								course.name.includes(this.state.searchField) && (
-									<CourseListItem key={course.id} {...course} id={course.id} />
-								)
-						)
+						courses
+							.filter((course) =>
+								course.name.toLowerCase().includes(this.state.searchField.toLowerCase())
+							)
+							.map((course) => <CourseListItem key={course.id} {...course} id={course.id} />)
 					)}
 				</ThreeCardsContainer>
 			</div>
