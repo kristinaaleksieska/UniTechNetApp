@@ -1,6 +1,6 @@
 import database from '../../firebase/firebase';
 import { push } from 'connected-react-router';
-
+import moment from 'moment';
 import { getCourseById } from '../../selectors/firebaseSelectors';
 
 import { addNotification } from '../notifications/notifications';
@@ -26,7 +26,8 @@ export const addProblem = (courseId, problem) => (dispatch, getState) =>
 				dispatch(
 					addNotification(NEW_PROBLEM_IN_COURSE, user, {
 						courseId,
-						problemId: problemReference.key
+						problemId: problemReference.key,
+						date: moment.utc().format()
 					})
 				);
 			});

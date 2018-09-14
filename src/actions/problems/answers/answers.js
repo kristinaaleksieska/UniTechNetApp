@@ -1,4 +1,5 @@
 import database from '../../../firebase/firebase';
+import moment from 'moment';
 
 import { addNotification } from '../../notifications/notifications';
 
@@ -22,7 +23,8 @@ export const addAnswer = (courseId, problemId, answer) => (dispatch) =>
 			dispatch(
 				addNotification(NEW_ANSWER_IN_PROBLEM, authorId, {
 					courseId,
-					problemId
+					problemId,
+					date: moment.utc().format()
 				})
 			);
 		})

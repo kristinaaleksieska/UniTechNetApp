@@ -1,5 +1,5 @@
 import database from '../../firebase/firebase';
-
+import moment from 'moment';
 import { getUserDetailsById, getCurrentUserDetails } from '../../selectors/firebaseSelectors';
 
 import { addNotification } from '../notifications/notifications';
@@ -44,7 +44,8 @@ export const sendMessage = (senderId, receiverId, message) => (dispatch) => {
 		.then(() =>
 			dispatch(
 				addNotification(NEW_MESSAGE, receiverId, {
-					senderId
+					senderId,
+					date: moment.utc().format()
 				})
 			)
 		);
