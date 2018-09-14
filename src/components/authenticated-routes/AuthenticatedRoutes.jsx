@@ -46,6 +46,9 @@ class AuthenticatedRoutes extends React.Component {
 					<Button onClick={this.goTo('/messenger')} color="primary" variant="flat">
 						Messenger
 					</Button>
+					<Button onClick={this.goTo('/notifications')} color="primary" variant="flat">
+						Noifications
+					</Button>
 				</Drawer>
 				<Switch>
 					<Route exact path="/profilepage" component={ProfilePage} />
