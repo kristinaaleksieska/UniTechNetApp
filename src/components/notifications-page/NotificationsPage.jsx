@@ -59,7 +59,7 @@ const NotificationsPage = ({ notifications, history, markAllNotificationsAsRead,
 					<Notification
 						userId={currentUserId}
 						notification={notification}
-						onNotificationClick={(notification) => console.log('hehe')}
+						onNotificationClick={onNotificationClick}
 					/>
 				))}
 			</div>

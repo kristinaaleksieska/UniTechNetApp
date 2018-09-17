@@ -20,9 +20,16 @@ const StyledConnection = styled(Connection)`
 	cursor: pointer;
 
 	background: ${ifProp('isSelected', 'rgba(244, 67, 54, 0.25) !important')};
+	
+	@keyframes highlight {
+		from { background: transparent };
+		to { background: rgba(244, 67, 45, 0.25) };
+	}
 
 	&:hover {
-		background: rgba(244, 67, 54, 0.25);
+		animation-name: highlight;
+		animation-duration: 0.5s;
+		background: rgba(244, 67, 45, 0.25);
 	}
 `;
 

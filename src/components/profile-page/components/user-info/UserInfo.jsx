@@ -7,6 +7,7 @@ import { startUpdateGeneralInfo } from '../../../../actions/profile-page/general
 import { addConnection } from '../../../../actions/profile-page/connectionActions';
 import { uploadPhotoOnFirebase } from '../../../../actions/profile-page/profilePicture';
 import { userLoggedIn } from '../../../../selectors/firebaseSelectors';
+import { withRouter } from 'react-router';
 import EditableUserDetails from './EditableUserDetails';
 import UserDetails from './UserDetails';
 import Loading from '../../../common/Loading';
@@ -132,11 +133,11 @@ class UserInfo extends React.Component {
 		});
 	};
 
-	addConnection = () => {
-		this.props.addConnection(this.props.userLoggedIn, this.state.user.id);
+	sendMessage = () => {
+		const { history } = this.props;
+		const { id } = this.state.user;
+		history.push(`/messenger/${id}`);
 	};
-
-	sendMessage = () => {};
 
 	generateActionButton = () => {
 		const { isCurrentUser, editable } = this.state;
@@ -223,4 +224,4 @@ const mapStateToProps = (state) => ({
 	userLoggedIn: userLoggedIn(state)
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(UserInfo);
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(UserInfo));
