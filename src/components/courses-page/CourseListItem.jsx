@@ -17,6 +17,8 @@ const ButtonContainer = styled.div`
 
 const CardContainer = styled.div`
 	width: 33%;
+	display: block;
+	padding-top: 5px;
 	margin-left: 2px;
 	margin-right: 2px;
 `;

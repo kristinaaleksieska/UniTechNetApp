@@ -75,7 +75,6 @@ class ExperienceForm extends React.Component {
 							value={this.state.company}
 							id="company"
 							onChange={this.onValueChange}
-							autoFocus
 							fullWidth
 							label="Company"
 						/>

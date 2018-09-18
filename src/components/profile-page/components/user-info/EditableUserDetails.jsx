@@ -56,7 +56,6 @@ const EditableUserDetails = (props) => (
 					value={props.user.lastName}
 					id="lastName"
 					onChange={props.onValueChange}
-					autoFocus
 					fullWidth
 					label="Last name"
 				/>
@@ -79,14 +78,7 @@ const EditableUserDetails = (props) => (
 				</StyledSelect>
 			</SelectContainer>
 			<TextFieldContainer>
-				<TextField
-					value={props.user.title}
-					id="title"
-					onChange={props.onValueChange}
-					autoFocus
-					fullWidth
-					label="Title"
-				/>
+				<TextField value={props.user.title} id="title" onChange={props.onValueChange} fullWidth label="Title" />
 			</TextFieldContainer>
 		</TwoTextFieldsContainer>
 
@@ -96,7 +88,6 @@ const EditableUserDetails = (props) => (
 					value={props.user.username}
 					id="username"
 					onChange={props.onValueChange}
-					autoFocus
 					fullWidth
 					label="Username"
 				/>
@@ -106,7 +97,6 @@ const EditableUserDetails = (props) => (
 					value={props.user.phoneNumber}
 					id="phoneNumber"
 					onChange={props.onValueChange}
-					autoFocus
 					fullWidth
 					label="Phone Number"
 				/>

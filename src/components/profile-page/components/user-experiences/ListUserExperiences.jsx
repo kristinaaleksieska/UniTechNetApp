@@ -15,7 +15,12 @@ const ListUserExperiences = ({ user }) => {
 	const { experiences } = user;
 
 	if (!experiences) {
-		return <div>You have no experiences</div>;
+		return (
+			<Card>
+				<CardContent>You have no experiences.</CardContent>
+				<AddExperience />
+			</Card>
+		);
 	}
 
 	return (

@@ -187,7 +187,7 @@ export const getAnswersByCourseAndProblemsId = (courseId, problemId) => (state) 
 				date: answers[answerId].date
 			}))
 		: [];
-	return _orderBy(problemAnswers, [ (answer) => moment.utc(answer.date).valueOf() ], [ 'asc' ]);
+	return _orderBy(problemAnswers, [ (answer) => moment.utc(answer.date).valueOf() ], [ 'desc' ]);
 };
 
 const mapAuthor = (author) => Object.keys(author)[0];

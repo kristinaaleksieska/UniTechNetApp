@@ -47,7 +47,7 @@ class AuthenticatedRoutes extends React.Component {
 						Messenger
 					</Button>
 					<Button onClick={this.goTo('/notifications')} color="primary" variant="flat">
-						Noifications
+						Notifications
 					</Button>
 				</Drawer>
 				<Switch>
