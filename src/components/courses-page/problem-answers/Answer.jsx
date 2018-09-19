@@ -40,9 +40,11 @@ class Answer extends React.Component {
 	}
 
 	editAnswer = (answer) => {
-		const { courseId, problemId, answerId } = this.props;
-		this.props.editAnswer(courseId, problemId, answer);
-		this.setState({ editable: false });
+		if (answer.description) {
+			const { courseId, problemId } = this.props;
+			this.props.editAnswer(courseId, problemId, answer);
+			this.setState({ editable: false });
+		}
 	};
 
 	deleteAnswer = () => {
@@ -77,15 +79,7 @@ class Answer extends React.Component {
 	};
 
 	render() {
-		const {
-			currentUserLoggedIn,
-			courseId,
-			problemId,
-			answer,
-			answerId,
-			authorDetails,
-			isMarkedAsAnswer
-		} = this.props;
+		const { currentUserLoggedIn, courseId, problemId, answer, authorDetails, isMarkedAsAnswer } = this.props;
 		const { editable } = this.state;
 
 		if (!currentUserLoggedIn || !courseId || !problemId || !answer || !authorDetails) {

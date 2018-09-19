@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import { ifProp } from 'styled-tools';
 import Loading from '../../../common/Loading';
 import ExperienceForm from './ExperienceForm';
-import { updateExperience, removeExperience } from '../../../../actions/profile-page/experienceActions';
+import { updateExperience, removeExperience } from '../../../../actions/user/experienceActions';
 import { userLoggedIn } from '../../../../selectors/firebaseSelectors';
 import { connect } from 'react-redux';
 import Edit from '@material-ui/icons/Edit';

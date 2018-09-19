@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import ExperienceForm from './ExperienceForm';
 import Button from '@material-ui/core/Button';
 import { userLoggedIn } from '../../../../selectors/firebaseSelectors';
-import { addExperience } from '../../../../actions/profile-page/experienceActions';
+import { addExperience } from '../../../../actions/user/experienceActions';
 import CardActions from '@material-ui/core/CardActions';
 import styled from 'styled-components';
 
@@ -15,22 +15,37 @@ const ExperienceContainer = styled.div`
 	padding-right: 15px;
 `;
 
+const ColumnContainer = styled.div`
+	display: flex;
+	flex-direction: column;
+`;
+
 class AddExperience extends React.Component {
 	state = {
-		addable: false
+		addable: false,
+		error: ''
 	};
 
 	addExperience = (experience) => {
-		this.props.addExperience(this.props.uid, experience);
-		this.setState({ addable: false });
+		if (!experience.startDate || !experience.company || !experience.jobTitle) {
+			this.setState({
+				error: 'Company name, Job Title and Start Date must not be empty'
+			});
+		} else {
+			this.props.addExperience(this.props.uid, experience);
+			this.setState({ addable: false });
+		}
 	};
 
 	render() {
-		const { addable } = this.state;
+		const { addable, error } = this.state;
 		return (
 			<ExperienceContainer>
 				{addable ? (
-					<ExperienceForm handleAction={this.addExperience} />
+					<ColumnContainer>
+						<ExperienceForm handleAction={this.addExperience} />
+						{error && <h5>{error}</h5>}
+					</ColumnContainer>
 				) : (
 					<CardActions>
 						<Button color="primary" variant="flat" onClick={() => this.setState({ addable: true })}>

@@ -42,7 +42,8 @@ const CardActionsContainer = styled.div`
 class ProblemDetails extends React.Component {
 	state = {
 		isAddProblemModalOpen: false,
-		shouldAddAnswer: false
+		shouldAddAnswer: false,
+		answerError: ''
 	};
 
 	deleteProblem = () => {
@@ -51,9 +52,16 @@ class ProblemDetails extends React.Component {
 	};
 
 	addAnswer = (answer) => {
-		const { problem, match: { params: { courseId } } } = this.props;
-		this.props.addAnswer(courseId, problem.id, answer);
-		this.setState({ shouldAddAnswer: false });
+		if (!answer.description) {
+			this.setState({
+				answerError: 'Please provide a non-empty answer'
+			});
+		} else {
+			const { problem, match: { params: { courseId } } } = this.props;
+			this.props.addAnswer(courseId, problem.id, answer);
+			this.setState({ shouldAddAnswer: false });
+			this.setState({ answerError: '' });
+		}
 	};
 
 	editProblem = (problem) => {
@@ -63,6 +71,7 @@ class ProblemDetails extends React.Component {
 
 	render() {
 		const { problem, currentUserDetails, courseAnswers, match: { params: { courseId } } } = this.props;
+		const { answerError } = this.state;
 		if (!problem || !currentUserDetails || !courseAnswers) {
 			return null;
 		}
@@ -92,7 +101,6 @@ class ProblemDetails extends React.Component {
 								color="primary"
 								onClick={() => this.setState({ shouldAddAnswer: true })}
 							>
-								{' '}
 								Add Answer
 							</Button>
 							{problem.authorId === currentUserDetails.id && (
@@ -116,6 +124,7 @@ class ProblemDetails extends React.Component {
 					{this.state.shouldAddAnswer && (
 						<AnswerForm userLoggedIn={currentUserDetails} handleAction={this.addAnswer} />
 					)}
+					{answerError && <h5>{answerError}</h5>}
 				</div>
 				<AnswerContainer>
 					{courseAnswers.map((courseAnswer) => (

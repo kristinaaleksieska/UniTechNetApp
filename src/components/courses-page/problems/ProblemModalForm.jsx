@@ -54,7 +54,8 @@ class SimpleModal extends React.Component {
 					firstName: userDetails.firstName,
 					lastName: userDetails.lastName
 				}
-			}
+			},
+			error: ''
 		};
 	}
 
@@ -72,14 +73,22 @@ class SimpleModal extends React.Component {
 	};
 
 	handleAction = () => {
-		const handleAction = this.props.editMode ? this.props.editProblem : this.props.addProblem;
+		const { editMode } = this.props;
+		const handleAction = editMode ? this.props.editProblem : this.props.addProblem;
 		const problem = { ...this.state };
-		handleAction(this.props.courseId, problem);
-		if (!this.props.editMode) {
-			this.onModalClose();
-		}
+		if (!editMode && (!problem.description || !problem.name)) {
+			this.setState({
+				error: 'Please provide name and description for the problem'
+			});
+		} else {
+			delete problem['error'];
+			handleAction(this.props.courseId, problem);
+			if (!editMode) {
+				this.onModalClose();
+			}
 
-		this.props.handleClose();
+			this.props.handleClose();
+		}
 	};
 
 	onModalClose = () => {
@@ -93,6 +102,7 @@ class SimpleModal extends React.Component {
 
 	render() {
 		const { title, shouldBeOpen } = this.props;
+		const { error } = this.state;
 		return (
 			<div>
 				<Modal
@@ -127,6 +137,7 @@ class SimpleModal extends React.Component {
 								/>
 							</TextFieldContainer>
 						</AddOrEditProblemContainer>
+						{error && <h5>{error}</h5>}
 						<Button
 							style={{ marginTop: '10px' }}
 							onClick={this.handleAction}

@@ -2,7 +2,7 @@ import React from 'react';
 import { compose } from 'redux';
 import { firebaseConnect } from 'react-redux-firebase';
 import { connect } from 'react-redux';
-import { startUpdateGeneralInfo } from '../../actions/profile-page/generalInfoActions';
+import { startUpdateGeneralInfo } from '../../actions/user/generalInfoActions';
 import styled from 'styled-components';
 
 import UserInfo from './components/user-info/UserInfo';

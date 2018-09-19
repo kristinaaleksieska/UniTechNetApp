@@ -1,5 +1,5 @@
 import database from '../../firebase/firebase';
-import { addConnection } from '../profile-page/connectionActions';
+import { addConnection } from '../user/connectionActions';
 const databaseCourse = async (courseid) => await database.ref(`courses/${courseid}`).once('value');
 
 export const subscribeToCourse = (uid, courseid, subscribedUserIds) => async () => {

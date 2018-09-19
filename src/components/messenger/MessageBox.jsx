@@ -46,17 +46,20 @@ class MessageBox extends React.Component {
 	};
 
 	handleSend = (inputMessage) => {
-		const { selectedChatId, currentUserId } = this.props;
-		const message = {
-			senderId: currentUserId,
-			sentDate: moment.utc().format(),
-			value: inputMessage
-		};
-		this.props.sendMessage(currentUserId, selectedChatId, message);
+		if (inputMessage) {
+			const { selectedChatId, currentUserId } = this.props;
+			const message = {
+				senderId: currentUserId,
+				sentDate: moment.utc().format(),
+				value: inputMessage
+			};
+			this.props.sendMessage(currentUserId, selectedChatId, message);
+		}
 	};
 
 	render() {
 		const { messages, currentUserId, selectedChatId } = this.props;
+
 		return (
 			<MessageBoxContainer>
 				<MessagesContainer>
