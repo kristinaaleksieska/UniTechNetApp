@@ -16,6 +16,16 @@ export const mapFirebaseExperiencesToArray = (firebaseExperiences) =>
 		endDate: firebaseExperiences[experienceId].endDate
 	}));
 
+export const mapFirebaseEducationToArray = (firebaseEducations) =>
+	Object.keys(firebaseEducations).map((educationId) => ({
+		id: educationId,
+		grade: firebaseEducations[educationId].grade,
+		school: firebaseEducations[educationId].school,
+		degree: firebaseEducations[educationId].degree,
+		startDate: firebaseEducations[educationId].startDate,
+		endDate: firebaseEducations[educationId].endDate
+	}));
+
 export const mapFirebaseProblemsToArray = (firebaseProblems) =>
 	Object.keys(firebaseProblems).map((problemId) => ({
 		id: problemId,

@@ -7,7 +7,7 @@ import Done from '@material-ui/icons/Done';
 
 const DoneIcon = <Done />;
 
-const AddOrEditExperience = styled.div`
+const AddOrEditEducation = styled.div`
 	display: flex;
 	justify-content: center;
 	margin-top: 10px;
@@ -22,23 +22,25 @@ const TwoTextFieldsContainer = styled.div`
 
 const TextFieldContainer = styled.div`padding: 5px;`;
 
-class ExperienceForm extends React.Component {
+class EducationForm extends React.Component {
 	constructor(props) {
 		super(props);
-		if (props.experience) {
+		if (props.education) {
 			this.state = {
-				id: props.experience.id,
-				startDate: props.experience.startDate,
-				endDate: props.experience.endDate ? props.experience.endDate : '',
-				company: props.experience.company,
-				jobTitle: props.experience.jobTitle
+				id: props.education.id,
+				startDate: props.education.startDate,
+				endDate: props.education.endDate ? props.education.endDate : '',
+				grade: props.education.grade,
+				school: props.education.school,
+				degree: props.education.degree
 			};
 		} else {
 			this.state = {
 				startDate: '',
 				endDate: '',
-				company: '',
-				jobTitle: ''
+				grade: '',
+				school: '',
+				degree: ''
 			};
 		}
 	}
@@ -51,34 +53,43 @@ class ExperienceForm extends React.Component {
 	};
 
 	handleAction = () => {
-		const experience = { ...this.state };
-		this.props.handleAction(experience);
+		const education = { ...this.state };
+		this.props.handleAction(education);
 	};
 
 	render() {
 		return (
-			<AddOrEditExperience>
+			<AddOrEditEducation>
 				<TwoTextFieldsContainer>
 					<TextFieldContainer>
 						<TextField
-							value={this.state.jobTitle}
-							id="jobTitle"
+							value={this.state.degree}
+							id="degree"
 							onChange={this.onValueChange}
 							autoFocus
 							fullWidth
 							required
-							label="Job Title"
+							label="Degree"
 						/>
 					</TextFieldContainer>
 					<TextFieldContainer>
 						<TextField
-							value={this.state.company}
-							id="company"
+							value={this.state.grade}
+							id="grade"
 							onChange={this.onValueChange}
 							fullWidth
-							label="Company"
+							label="GPA"
 						/>
 					</TextFieldContainer>
+				</TwoTextFieldsContainer>
+				<TwoTextFieldsContainer>
+					<TextField
+						value={this.state.school}
+						id="school"
+						onChange={this.onValueChange}
+						fullWidth
+						label="School"
+					/>
 				</TwoTextFieldsContainer>
 				<TwoTextFieldsContainer>
 					<CustomDatePicker
@@ -97,9 +108,9 @@ class ExperienceForm extends React.Component {
 				<Button onClick={this.handleAction} variant="flat" color="primary">
 					{DoneIcon}
 				</Button>
-			</AddOrEditExperience>
+			</AddOrEditEducation>
 		);
 	}
 }
 
-export default ExperienceForm;
+export default EducationForm;

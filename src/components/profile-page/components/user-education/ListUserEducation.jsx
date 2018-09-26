@@ -1,8 +1,8 @@
 import React from 'react';
 import Loading from '../../../common/Loading';
-import { mapFirebaseExperiencesToArray } from '../../../../mappings-from-firebase/MappingsFromFirebase';
-import UserExperience from './UserExperience';
-import AddExperience from './AddExperience';
+import { mapFirebaseEducationToArray } from '../../../../mappings-from-firebase/MappingsFromFirebase';
+import UserEducation from './UserEducation';
+import AddEducation from './AddEducation';
 import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
 import CardHeader from '@material-ui/core/CardHeader';
@@ -15,13 +15,13 @@ const ListUserExperiences = ({ user }) => {
 	if (!user) {
 		return <Loading />;
 	}
-	const { experiences } = user;
+	const { educations } = user;
 
-	if (!experiences) {
+	if (!educations) {
 		return (
 			<Card>
-				<CardContent>You have no experiences.</CardContent>
-				<AddExperience />
+				<CardContent>You have not added education.</CardContent>
+				<AddEducation />
 			</Card>
 		);
 	}
@@ -29,13 +29,13 @@ const ListUserExperiences = ({ user }) => {
 	return (
 		<CardContainer>
 			<Card>
-				<CardHeader title="Experience" avatar={<Avatar aria-label="Experiences">E</Avatar>} />
+				<CardHeader title="Education" avatar={<Avatar aria-label="Education">E</Avatar>} />
 				<CardContent>
-					{mapFirebaseExperiencesToArray(experiences)
+					{mapFirebaseEducationToArray(educations)
 						.sort((a, b) => a.startDate < b.startDate)
-						.map((experience) => <UserExperience key={experience.id} experience={experience} />)}
+						.map((education) => <UserEducation key={education.id} education={education} />)}
 				</CardContent>
-				<AddExperience />
+				<AddEducation />
 			</Card>
 		</CardContainer>
 	);

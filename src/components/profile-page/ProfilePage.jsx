@@ -8,6 +8,7 @@ import styled from 'styled-components';
 import UserInfo from './components/user-info/UserInfo';
 import ListUserCourses from './components/user-courses/ListUserCourses';
 import ListUserExperiences from './components/user-experiences/ListUserExperiences';
+import ListUserEducation from './components/user-education/ListUserEducation';
 // Selectors
 import { getCurrentUserDetails } from '../../selectors/firebaseSelectors';
 
@@ -19,7 +20,11 @@ const TwoCardsContainer = styled.div`
 	flex-flow: wrap;
 `;
 
-const CardContainer = styled.div`width: 48%;`;
+const ColumnCardContainer = styled.div`
+	display: flex;
+	flex-direction: column;
+	width: 48%;
+`;
 
 class ProfilePage extends React.Component {
 	onSubmit = (updatedGeneralInfo) => {
@@ -31,12 +36,13 @@ class ProfilePage extends React.Component {
 			<div>
 				<UserInfo user={this.props.currentUser} />
 				<TwoCardsContainer>
-					<CardContainer>
+					<ColumnCardContainer>
 						<ListUserCourses user={this.props.currentUser} />
-					</CardContainer>
-					<CardContainer>
+					</ColumnCardContainer>
+					<ColumnCardContainer>
 						<ListUserExperiences user={this.props.currentUser} />
-					</CardContainer>
+						<ListUserEducation user={this.props.currentUser} />
+					</ColumnCardContainer>
 				</TwoCardsContainer>
 			</div>
 		);
