@@ -1,12 +1,12 @@
 import firebase from 'firebase';
 
 export const firebaseConfig = {
-	apiKey: 'AIzaSyAMbI4ptcPNXdsCcRG6dmFjveXX6Z9nIp8',
-	authDomain: 'uniapptechnet.firebaseapp.com',
-	databaseURL: 'https://uniapptechnet.firebaseio.com',
-	projectId: 'uniapptechnet',
-	storageBucket: 'uniapptechnet.appspot.com',
-	messagingSenderId: '498570156494'
+  apiKey: 'AIzaSyB6ksgx9R3SmbOhXKg8MRO1DMD3myFfpIk',
+  authDomain: 'unitechnet-34c43.firebaseapp.com',
+  databaseURL: 'https://unitechnet-34c43.firebaseio.com',
+  projectId: 'unitechnet-34c43',
+  storageBucket: 'unitechnet-34c43.appspot.com',
+  messagingSenderId: '429882862683'
 };
 
 firebase.initializeApp(firebaseConfig);
