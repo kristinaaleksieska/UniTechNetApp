@@ -8,79 +8,96 @@ import moment from 'moment';
 
 import MessageInput from './MessageInput';
 import SingleMessage from './SingleMessage';
-import { getMessagesFromChat, userLoggedIn } from '../../selectors/firebaseSelectors';
+import {
+  getMessagesFromChat,
+  userLoggedIn
+} from '../../selectors/firebaseSelectors';
 
 const MessageBoxContainer = styled.div`
-	display: flex;
-	flex: 0.8;
-	flex-direction: column;
-	height: 80vh;
-	padding: 0 16px;
+  display: flex;
+  flex: 0.8;
+  flex-direction: column;
+  height: 80vh;
+  padding: 0 16px;
 `;
 
 const MessagesContainer = styled.div`
-	width: 100%;
-	height: 100vh;
-	overflow-y: scroll;
-	display: flex;
-	flex-direction: column;
+  width: 100%;
+  height: 100vh;
+  overflow-y: scroll;
+  display: flex;
+  flex-direction: column;
 `;
 
 class MessageBox extends React.Component {
-	constructor(props) {
-		super(props);
+  constructor(props) {
+    super(props);
 
-		this.emptyDivRef = React.createRef();
-	}
+    this.emptyDivRef = React.createRef();
+  }
 
-	componentDidMount() {
-		this.scrollToBottom();
-	}
+  componentDidMount() {
+    this.scrollToBottom();
+  }
 
-	componentDidUpdate() {
-		this.scrollToBottom();
-	}
+  componentDidUpdate() {
+    this.scrollToBottom();
+  }
 
-	scrollToBottom = () => {
-		this.emptyDivRef.current.scrollIntoView({ behavior: 'smooth' });
-	};
+  scrollToBottom = () => {
+    this.emptyDivRef.current.scrollIntoView({ behavior: 'smooth' });
+  };
 
-	handleSend = (inputMessage) => {
-		if (inputMessage) {
-			const { selectedChatId, currentUserId } = this.props;
-			const message = {
-				senderId: currentUserId,
-				sentDate: moment.utc().format(),
-				value: inputMessage
-			};
-			this.props.sendMessage(currentUserId, selectedChatId, message);
-		}
-	};
+  handleSend = inputMessage => {
+    if (inputMessage) {
+      const { selectedChatId, currentUserId } = this.props;
+      const message = {
+        senderId: currentUserId,
+        sentDate: moment
+          .utc()
+          .add(2, 'hours')
+          .format(),
+        value: inputMessage
+      };
+      this.props.sendMessage(currentUserId, selectedChatId, message);
+    }
+  };
 
-	render() {
-		const { messages, currentUserId, selectedChatId } = this.props;
+  render() {
+    const { messages, currentUserId, selectedChatId } = this.props;
 
-		return (
-			<MessageBoxContainer>
-				<MessagesContainer>
-					{messages.map((message) => <SingleMessage message={message} currentUserId={currentUserId} />)}
-					<div style={{ float: 'left', clear: 'both' }} ref={this.emptyDivRef} />
-				</MessagesContainer>
-				{selectedChatId && <MessageInput handleSend={this.handleSend} />}
-			</MessageBoxContainer>
-		);
-	}
+    return (
+      <MessageBoxContainer>
+        <MessagesContainer>
+          {messages.map(message => (
+            <SingleMessage message={message} currentUserId={currentUserId} />
+          ))}
+          <div
+            style={{ float: 'left', clear: 'both' }}
+            ref={this.emptyDivRef}
+          />
+        </MessagesContainer>
+        {selectedChatId && <MessageInput handleSend={this.handleSend} />}
+      </MessageBoxContainer>
+    );
+  }
 }
 
 const mapStateToProps = (state, ownProps) => ({
-	messages: getMessagesFromChat(ownProps.selectedChatId)(state),
-	currentUserId: userLoggedIn(state)
+  messages: getMessagesFromChat(ownProps.selectedChatId)(state),
+  currentUserId: userLoggedIn(state)
 });
 
 const mapDispatchToProps = {
-	sendMessage
+  sendMessage
 };
 
-const composer = compose(firebaseConnect([ 'users' ]), connect(mapStateToProps, mapDispatchToProps));
+const composer = compose(
+  firebaseConnect(['users']),
+  connect(
+    mapStateToProps,
+    mapDispatchToProps
+  )
+);
 
 export default composer(MessageBox);
